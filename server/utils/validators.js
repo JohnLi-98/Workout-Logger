@@ -50,3 +50,16 @@ module.exports.validateRegisterInput = (
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateLogSetInput = (exerciseName, weight, reps) => {
+  const errors = {};
+
+  if (exerciseName.trim() === "") {
+    errors.exerciseName = "Choose the exercise you performed";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};

@@ -1,7 +1,9 @@
-const usersResolver = require("./users");
+const userResolvers = require("./users");
+const setResolvers = require("./set");
 
 module.exports = {
   Mutation: {
-    ...usersResolver.Mutation,
+    ...userResolvers.Mutation,
+    ...setResolvers.Mutation,
   },
 };
