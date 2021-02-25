@@ -45,6 +45,58 @@ const addSetToExerciseLog = async (exercise, set) => {
   return exercise;
 };
 
+const getWorkoutLog = async (user, exerciseId, exerciseName) => {
+  console.log(exerciseId + " getWorkout");
+  console.log(exerciseName + " getWorkout");
+  let workout = await Workout.findOne({ user: user.id }).sort({
+    createdAt: -1,
+  });
+
+  const expiredWorkout = workout && Date.now() > workout.createdAt + 14400000;
+  if (!workout || expiredWorkout) {
+    const newWorkout = new Workout({
+      user: user.id,
+      username: user.username,
+      createdAt: Date.now(),
+      exercises: [
+        {
+          _id: exerciseId,
+          exerciseName,
+        },
+      ],
+    });
+    workout = newWorkout.save();
+  }
+  return { workout, exerciseId };
+};
+
+const addSetToWorkoutLog = async (data, exerciseName, set) => {
+  console.log(data + " before addworkoutset");
+  const { workout, exerciseId } = data;
+  console.log(exerciseId + " after addworkoutset");
+  const exerciseExists = workout.exercises.some(
+    (exercise) => exercise._id === exerciseId
+  );
+  if (!exerciseExists) {
+    console.log("adding exercise");
+    workout.exercises.unshift({
+      _id: exerciseId,
+      exerciseName,
+    });
+    console.log(workout.exercises);
+  }
+
+  const exercise = workout.exercises.find(
+    (exercise) => exercise.id === exerciseId
+  );
+  console.log(workout.exercises);
+  console.log(exercise);
+  if (exercise) {
+    exercise.sets.unshift(set);
+    await workout.save();
+  }
+};
+
 module.exports = {
   Mutation: {
     async logSet(
@@ -64,62 +116,25 @@ module.exports = {
         notes,
       });
 
-      let exercise = getExerciseLog(exerciseName, user).then((exercise) => {
-        addSetToExerciseLog(exercise, set).then((exercise) => {
-          console.log(exercise.id);
-        });
-      });
+      const exerciseLog = await getExerciseLog(exerciseName, user);
+      await addSetToExerciseLog(exerciseLog, set);
 
-      //addSetToExerciseLog(exercise, set);
-      const exerciseId = exercise.id;
-      console.log(exerciseId);
+      const workoutLog = await getWorkoutLog(
+        user,
+        exerciseLog.id,
+        exerciseLog.exerciseName
+      );
+      await addSetToWorkoutLog(exerciseLog, exerciseName, set);
 
-      // let exercise = await Exercise.findOne({
-      //   exerciseName: exerciseName,
-      //   user: user.id,
-      // });
-      // if (!exercise) {
-      //   const newExercise = new Exercise({
-      //     exerciseName,
-      //     user: user.id,
-      //     username: user.username,
+      // getExerciseLog(exerciseName, user).then((exercise) => {
+      //   addSetToExerciseLog(exercise, set).then((exercise) => {
+      //     getWorkoutLog(user, exercise.id, exercise.exerciseName).then(
+      //       (data) => {
+      //         addSetToWorkoutLog(data, exerciseName, set);
+      //       }
+      //     );
       //   });
-      //   exercise = await newExercise.save();
-      // }
-      // const set = {
-      //   weight,
-      //   reps,
-      //   createdAt: Date.now(),
-      //   notes,
-      // };
-      // exercise.sets.unshift(set);
-      // await exercise.save();
-      // const exerciseId = exercise.id;
-      // console.log(exerciseId);
-
-      // let workout = await Workout.findOne({ user: user.id }).sort({
-      //   createdAt: -1,
       // });
-      // const expiredWorkout =
-      //   workout && Date.now() > workout.createdAt + 14400000;
-
-      // if (!workout || expiredWorkout) {
-      //   workout = createNewWorkout(user, exerciseId, exerciseName);
-      //   console.log("new workout " + workout.exercises[0].id);
-      // }
-
-      // const found = workout.exercises.some(
-      //   (el) => el.exerciseName === exerciseName
-      // );
-      // if (!found) {
-      //   workout.exercises.unshift(newExercise);
-      // }
-
-      // let exerciseMatch = workout.exercises.find(
-      //   (e) => e.exerciseName === exerciseName
-      // );
-      // exerciseMatch.sets.unshift(set);
-      // await workout.save();
       return set;
     },
   },
