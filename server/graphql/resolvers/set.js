@@ -114,15 +114,27 @@ module.exports = {
         user: user.id,
       });
       if (exerciseLog) {
-        const setIndex = exerciseLog.sets.findIndex((set) => set.id === setId);
-        if (setIndex >= 0) {
-          exerciseLog.sets.splice(setIndex, 1);
-          await exerciseLog.save();
-        } else {
-          throw new Error("Set not found");
-        }
+        // const setIndex = exerciseLog.sets.findIndex((set) => set.id === setId);
+        // if (setIndex >= 0) {
+        //   exerciseLog.sets.splice(setIndex, 1);
+        //   await exerciseLog.save();
+        // } else {
+        //   throw new Error("Set not found");
+        // }
+        console.log("deleted set");
       } else {
         throw new Error("Exercise log not found");
+      }
+
+      // Gets the correct workout.
+      const workoutLog = await Workout.find({
+        user: user.id,
+        "exercises.sets._id": setId,
+      });
+      if (workoutLog) {
+        console.log(workoutLog);
+      } else {
+        throw new Error("Workout log not found");
       }
     },
   },
