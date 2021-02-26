@@ -6,7 +6,22 @@ const Set = require("../../models/Set");
 const Exercise = require("../../models/Exercise");
 const Workout = require("../../models/Workout");
 
-const createNewWorkout = (user, exerciseId, exerciseName) => {
+const createExerciseLog = async (user, exerciseName) => {
+  const newExercise = new Exercise({
+    user: user.id,
+    exerciseName,
+    username: user.username,
+  });
+  const exerciseLog = await newExercise.save();
+  return exerciseLog;
+};
+
+const updateExerciseLog = async (exerciseLog, set) => {
+  exerciseLog.sets.unshift(set);
+  return await exerciseLog.save();
+};
+
+const createWorkoutLog = async (user, exerciseId, exerciseName) => {
   const newWorkout = new Workout({
     user: user.id,
     username: user.username,
@@ -18,82 +33,27 @@ const createNewWorkout = (user, exerciseId, exerciseName) => {
       },
     ],
   });
-  return newWorkout;
+  const workoutLog = await newWorkout.save();
+  return workoutLog;
 };
 
-const addExercisetoWorkout = () => {};
-
-const getExerciseLog = async (exerciseName, user) => {
-  let exercise = await Exercise.findOne({
-    exerciseName,
-    user: user.id,
-  });
-  if (!exercise) {
-    const newExercise = new Exercise({
-      exerciseName,
-      user: user.id,
-      username: user.username,
-    });
-    exercise = await newExercise.save();
-  }
-  return exercise;
-};
-
-const addSetToExerciseLog = async (exercise, set) => {
-  exercise.sets.unshift(set);
-  await exercise.save();
-  return exercise;
-};
-
-const getWorkoutLog = async (user, exerciseId, exerciseName) => {
-  console.log(exerciseId + " getWorkout");
-  console.log(exerciseName + " getWorkout");
-  let workout = await Workout.findOne({ user: user.id }).sort({
-    createdAt: -1,
-  });
-
-  const expiredWorkout = workout && Date.now() > workout.createdAt + 14400000;
-  if (!workout || expiredWorkout) {
-    const newWorkout = new Workout({
-      user: user.id,
-      username: user.username,
-      createdAt: Date.now(),
-      exercises: [
-        {
-          _id: exerciseId,
-          exerciseName,
-        },
-      ],
-    });
-    workout = newWorkout.save();
-  }
-  return { workout, exerciseId };
-};
-
-const addSetToWorkoutLog = async (data, exerciseName, set) => {
-  console.log(data + " before addworkoutset");
-  const { workout, exerciseId } = data;
-  console.log(exerciseId + " after addworkoutset");
-  const exerciseExists = workout.exercises.some(
-    (exercise) => exercise._id === exerciseId
+const updateWorkoutLog = async (workoutLog, exerciseId, exerciseName, set) => {
+  const exerciseExists = workoutLog.exercises.some(
+    (exercise) => exercise.id === exerciseId
   );
   if (!exerciseExists) {
-    console.log("adding exercise");
-    workout.exercises.unshift({
+    workoutLog.exercises.unshift({
       _id: exerciseId,
       exerciseName,
     });
-    console.log(workout.exercises);
   }
 
-  const exercise = workout.exercises.find(
+  const exercise = workoutLog.exercises.find(
     (exercise) => exercise.id === exerciseId
   );
-  console.log(workout.exercises);
-  console.log(exercise);
   if (exercise) {
     exercise.sets.unshift(set);
-    await workout.save();
+    await workoutLog.save();
   }
 };
 
@@ -116,25 +76,25 @@ module.exports = {
         notes,
       });
 
-      const exerciseLog = await getExerciseLog(exerciseName, user);
-      await addSetToExerciseLog(exerciseLog, set);
+      let exerciseLog = await Exercise.findOne({
+        exerciseName,
+        user: user.id,
+      });
+      if (!exerciseLog) {
+        exerciseLog = await createExerciseLog(user, exerciseName);
+      }
+      await updateExerciseLog(exerciseLog, set);
 
-      const workoutLog = await getWorkoutLog(
-        user,
-        exerciseLog.id,
-        exerciseLog.exerciseName
-      );
-      await addSetToWorkoutLog(exerciseLog, exerciseName, set);
+      let workoutLog = await Workout.findOne({ user: user.id }).sort({
+        createdAt: -1,
+      });
+      const expiredWorkout =
+        workoutLog && Date.now() > workoutLog.createdAt + 14400000;
+      if (!workoutLog || expiredWorkout) {
+        workoutLog = await createWorkoutLog(user, exerciseLog.id, exerciseName);
+      }
+      await updateWorkoutLog(workoutLog, exerciseLog.id, exerciseName, set);
 
-      // getExerciseLog(exerciseName, user).then((exercise) => {
-      //   addSetToExerciseLog(exercise, set).then((exercise) => {
-      //     getWorkoutLog(user, exercise.id, exercise.exerciseName).then(
-      //       (data) => {
-      //         addSetToWorkoutLog(data, exerciseName, set);
-      //       }
-      //     );
-      //   });
-      // });
       return set;
     },
   },
