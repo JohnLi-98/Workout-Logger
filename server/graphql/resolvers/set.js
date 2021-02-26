@@ -16,7 +16,7 @@ const createExerciseLog = async (user, exerciseName) => {
   return exerciseLog;
 };
 
-const updateExerciseLog = async (exerciseLog, set) => {
+const addSetToExerciseLog = async (exerciseLog, set) => {
   exerciseLog.sets.unshift(set);
   return await exerciseLog.save();
 };
@@ -37,7 +37,12 @@ const createWorkoutLog = async (user, exerciseId, exerciseName) => {
   return workoutLog;
 };
 
-const updateWorkoutLog = async (workoutLog, exerciseId, exerciseName, set) => {
+const addSetToWorkoutLog = async (
+  workoutLog,
+  exerciseId,
+  exerciseName,
+  set
+) => {
   const exerciseExists = workoutLog.exercises.some(
     (exercise) => exercise.id === exerciseId
   );
@@ -83,7 +88,7 @@ module.exports = {
       if (!exerciseLog) {
         exerciseLog = await createExerciseLog(user, exerciseName);
       }
-      await updateExerciseLog(exerciseLog, set);
+      await addSetToExerciseLog(exerciseLog, set);
 
       let workoutLog = await Workout.findOne({ user: user.id }).sort({
         createdAt: -1,
@@ -93,9 +98,32 @@ module.exports = {
       if (!workoutLog || expiredWorkout) {
         workoutLog = await createWorkoutLog(user, exerciseLog.id, exerciseName);
       }
-      await updateWorkoutLog(workoutLog, exerciseLog.id, exerciseName, set);
+      await addSetToWorkoutLog(workoutLog, exerciseLog.id, exerciseName, set);
 
       return set;
+    },
+    // async editSet(
+    //   _,
+    //   { editSetInput: { exerciseId, setId, weight, reps, notes } },
+    //   context
+    // ) {},
+    async deleteSet(_, { exerciseId, setId }, context) {
+      const user = checkAuth(context);
+      const exerciseLog = await Exercise.findOne({
+        _id: exerciseId,
+        user: user.id,
+      });
+      if (exerciseLog) {
+        const setIndex = exerciseLog.sets.findIndex((set) => set.id === setId);
+        if (setIndex >= 0) {
+          exerciseLog.sets.splice(setIndex, 1);
+          await exerciseLog.save();
+        } else {
+          throw new Error("Set not found");
+        }
+      } else {
+        throw new Error("Exercise log not found");
+      }
     },
   },
 };
