@@ -158,64 +158,27 @@ module.exports = {
         }
       ).exec();
 
-      // const workout = await Workout.find({
-      //   user: user.id,
-      //   "exercises.sets._id": setId,
-      // });
-      // console.log(workout);
-
       const workout = await Workout.updateOne(
         {
           user: user.id,
           "exercises.sets._id": setId,
         },
         {
-          "exercises.$[i].sets.$[j].weight": weight,
-          "exercises.$[i].sets.$[j].reps": reps,
-          "exercises.$[i].sets.$[j].notes": notes,
+          "exercises.$[exercise].sets.$[set].weight": weight,
+          "exercises.$[exercise].sets.$[set].reps": reps,
+          "exercises.$[exercise].sets.$[set].notes": notes,
         },
         {
           arrayFilters: [
             {
-              "i._id": exerciseId,
+              "exercise._id": exerciseId,
             },
             {
-              "j._id": setId,
+              "set._id": setId,
             },
           ],
         }
       ).exec();
-      console.log(workout + "workout");
-      /*
-      let exerciseLog = await Exercise.findOne({
-        _id: exerciseId,
-        user: user.id,
-        "sets._id": setId,
-      });
-      if (exerciseLog) {
-        const set = exerciseLog.sets.find((set) => set.id === setId);
-        if (set) {
-          const newSet = {
-            _id: set.id,
-            weight,
-            reps,
-            createdAt: set.createdAt,
-            notes,
-          };
-          console.log(newSet);
-          console.log("Space between");
-          console.log(set);
-
-          const setIndex = exerciseLog.sets.findIndex(
-            (set) => set.id === setId
-          );
-          exerciseLog.sets.splice(setIndex, 1, newSet);
-          await exerciseLog.save();
-        }
-      } else {
-        throw new Error("Set not found");
-      }
-      */
     },
   },
 };
