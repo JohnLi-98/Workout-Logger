@@ -2,6 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const workoutSchema = new Schema({
   workoutName: String,
+  username: String,
   createdAt: Number,
   exercises: [
     {
