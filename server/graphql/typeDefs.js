@@ -45,6 +45,13 @@ module.exports = gql`
     reps: Int!
     notes: String!
   }
+  input EditSetInput {
+    exerciseId: ID!
+    setId: ID!
+    weight: Float!
+    reps: Int!
+    notes: String!
+  }
 
   type Query {
     helloWorld: String
@@ -54,5 +61,6 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     logSet(logSetInput: LogSetInput): Set!
     deleteSet(exerciseId: ID!, setId: ID!): Set
+    editSet(editSetInput: EditSetInput): Set
   }
 `;
