@@ -55,6 +55,8 @@ module.exports = gql`
 
   type Query {
     helloWorld: String
+    getAllExerciseLogs: [Exercise]!
+    getExerciseLog(exerciseId: ID!): Exercise!
   }
   type Mutation {
     login(loginInput: LoginInput): User!
@@ -62,5 +64,6 @@ module.exports = gql`
     logSet(logSetInput: LogSetInput): Set!
     deleteSet(exerciseId: ID!, setId: ID!): Set
     editSet(editSetInput: EditSetInput): Set
+    addExercise(exerciseName: String!): Exercise!
   }
 `;
