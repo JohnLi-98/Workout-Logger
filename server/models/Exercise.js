@@ -2,6 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const exerciseSchema = new Schema({
   exerciseName: String,
+  username: String,
   sets: [
     {
       weight: Number,
