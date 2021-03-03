@@ -54,7 +54,6 @@ module.exports = gql`
   }
 
   type Query {
-    helloWorld: String
     getAllExerciseLogs: [Exercise]!
     getExerciseLog(exerciseId: ID!): Exercise!
     getAllWorkoutLogs: [Workout]!

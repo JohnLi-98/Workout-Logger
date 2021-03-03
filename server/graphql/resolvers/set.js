@@ -121,7 +121,6 @@ module.exports = {
         throw new Error("Exercise log not found");
       }
 
-      // Gets the correct workout.
       const workoutLog = await Workout.findOne({
         user: user.id,
         "exercises._id": exerciseId,

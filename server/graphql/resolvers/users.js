@@ -24,7 +24,6 @@ function generateToken(user) {
 module.exports = {
   Mutation: {
     async login(_, { loginInput: { username, password } }) {
-      // Validates user inputs - Uses function from validators file
       const { errors, valid } = validateLoginInput(username, password);
       if (!valid) {
         throw new UserInputError("Errors", { errors });
@@ -55,7 +54,6 @@ module.exports = {
       _,
       { registerInput: { username, email, password, confirmPassword } }
     ) {
-      // Validate user inputs - Uses function from validators file
       const { errors, valid } = validateRegisterInput(
         username,
         email,
@@ -78,17 +76,14 @@ module.exports = {
 
       // If inputs are valid and the username isn't taken, create and save the user to the database.
       password = await bcrypt.hash(password, 12);
-
       const newUser = new User({
         username,
         email,
         password,
         createdAt: Date.now(),
       });
-
       const res = await newUser.save();
       const token = generateToken(res);
-
       return {
         ...res._doc,
         id: res._id,

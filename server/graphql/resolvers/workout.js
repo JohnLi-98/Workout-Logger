@@ -12,7 +12,11 @@ module.exports = {
         }).sort({
           createdAt: -1,
         });
-        return allWorkouts;
+        if (allWorkouts) {
+          return allWorkouts;
+        } else {
+          throw new Error("Unable to fetch workout logs");
+        }
       } catch (err) {
         throw new Error(err);
       }
@@ -26,7 +30,11 @@ module.exports = {
           user: user.id,
           username: user.username,
         });
-        return workoutLog;
+        if (workoutLog) {
+          return workoutLog;
+        } else {
+          throw new Error("Log for this workout not found");
+        }
       } catch (err) {
         throw new Error(err);
       }
@@ -39,7 +47,11 @@ module.exports = {
           user: user.id,
           username: user.username,
         }).sort({ createdAt: -1 });
-        return workoutLog;
+        if (workoutLog) {
+          return workoutLog;
+        } else {
+          throw new Error("Unable to fetch your most recent workout");
+        }
       } catch (err) {
         throw new Error(err);
       }
