@@ -65,7 +65,6 @@ const Navbar = () => {
 
   const handleItemClick = (event, selected) => {
     setSelectedItem(selected);
-    console.log(selectedItem);
   };
 
   return (
