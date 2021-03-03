@@ -146,7 +146,7 @@ module.exports = {
       context
     ) {
       const user = checkAuth(context);
-      const log = await Exercise.updateOne(
+      await Exercise.updateOne(
         {
           user: user.id,
           "sets._id": setId,
@@ -158,7 +158,7 @@ module.exports = {
         }
       ).exec();
 
-      const workout = await Workout.updateOne(
+      await Workout.updateOne(
         {
           user: user.id,
           "exercises.sets._id": setId,

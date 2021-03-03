@@ -57,6 +57,9 @@ module.exports = gql`
     helloWorld: String
     getAllExerciseLogs: [Exercise]!
     getExerciseLog(exerciseId: ID!): Exercise!
+    getAllWorkoutLogs: [Workout]!
+    getWorkoutLog(workoutId: ID!): Workout!
+    getMostRecentWorkout: Workout!
   }
   type Mutation {
     login(loginInput: LoginInput): User!
