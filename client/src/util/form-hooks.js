@@ -18,11 +18,11 @@ export const useForm = (callback, initialState = {}) => {
     callback();
   };
 
-  const passwordVisibility = (event) => {
+  const passwordVisibility = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const confirmPasswordVisibility = (event) => {
+  const confirmPasswordVisibility = () => {
     setValues({ ...values, showConfirmPassword: !values.showConfirmPassword });
   };
 

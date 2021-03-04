@@ -2,7 +2,7 @@ import React from "react";
 
 import LoginForm from "../components/account/LoginForm";
 
-const Login = () => {
+const Login = (props) => {
   return <LoginForm />;
 };
 
