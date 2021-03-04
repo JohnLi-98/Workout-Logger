@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Container,
@@ -18,10 +18,12 @@ import { useMutation } from "@apollo/client";
 import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
 import { LOGIN_USER } from "../../util/graphql-operations";
+import { AuthContext } from "../../context/auth";
 
 const LoginForm = ({ props }) => {
   const classes = styles();
   const [errors, setErrors] = useState({});
+  const context = useContext(AuthContext);
 
   const loginCallback = () => loginUser();
 
@@ -36,10 +38,10 @@ const LoginForm = ({ props }) => {
 
   const [loginUser] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
+      context.login(userData);
       props.history.push("/");
     },
     onError(err) {
-      console.log(err);
       setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values,
