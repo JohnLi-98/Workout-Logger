@@ -14,17 +14,23 @@ import { AccountCircle } from "@material-ui/icons";
 import LockIcon from "@material-ui/icons/Lock";
 
 import styles from "./styles";
+import { useForm } from "../../util/form-hooks";
 
 const LoginForm = () => {
   const classes = styles();
 
-  const onChange = () => {
-    console.log("changing values");
+  const callbackFunc = () => {
+    console.log("running callback function");
   };
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-  };
+  const { onChange, onSubmit, passwordVisibility, values } = useForm(
+    callbackFunc,
+    {
+      username: "",
+      password: "",
+      showPassword: false,
+    }
+  );
 
   return (
     <Container maxWidth="md">
@@ -50,6 +56,7 @@ const LoginForm = () => {
                 name="username"
                 label="Username"
                 type="text"
+                value={values.username}
                 onChange={onChange}
                 variant="outlined"
                 fullWidth
@@ -77,6 +84,7 @@ const LoginForm = () => {
                 <OutlinedInput
                   id="password"
                   name="password"
+                  value={values.password}
                   onChange={onChange}
                   endAdornment={
                     <InputAdornment position="end">
