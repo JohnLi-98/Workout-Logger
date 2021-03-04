@@ -22,7 +22,7 @@ const styles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "100px 0 30px",
+    padding: "70px 0 30px",
     "& h1": {
       marginBottom: "-5px",
     },

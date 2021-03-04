@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Container,
@@ -12,25 +12,38 @@ import {
 } from "@material-ui/core";
 import { AccountCircle, Visibility, VisibilityOff } from "@material-ui/icons";
 import LockIcon from "@material-ui/icons/Lock";
+import Alert from "@material-ui/lab/Alert";
+import { useMutation } from "@apollo/client";
 
 import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
+import { LOGIN_USER } from "../../util/graphql-operations";
 
-const LoginForm = () => {
+const LoginForm = ({ props }) => {
   const classes = styles();
+  const [errors, setErrors] = useState({});
 
-  const callbackFunc = () => {
-    console.log("running callback function");
-  };
+  const loginCallback = () => loginUser();
 
   const { onChange, onSubmit, passwordVisibility, values } = useForm(
-    callbackFunc,
+    loginCallback,
     {
       username: "",
       password: "",
       showPassword: false,
     }
   );
+
+  const [loginUser] = useMutation(LOGIN_USER, {
+    update(_, { data: { login: userData } }) {
+      props.history.push("/");
+    },
+    onError(err) {
+      console.log(err);
+      setErrors(err.graphQLErrors[0].extensions.errors);
+    },
+    variables: values,
+  });
 
   return (
     <Container maxWidth="md">
@@ -61,6 +74,7 @@ const LoginForm = () => {
                 variant="outlined"
                 fullWidth
                 className={classes.input}
+                error={errors.username ? true : false}
                 required
               />
             </Grid>
@@ -78,6 +92,7 @@ const LoginForm = () => {
                 className={classes.input}
                 variant="outlined"
                 fullWidth
+                error={errors.password ? true : false}
                 required
               >
                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -115,6 +130,16 @@ const LoginForm = () => {
             Login
           </Button>
         </div>
+
+        {Object.keys(errors).length > 0 && (
+          <div className={classes.formInput}>
+            <Alert variant="filled" severity="error">
+              {Object.values(errors).map((value) => (
+                <li key={value}>{value}</li>
+              ))}
+            </Alert>
+          </div>
+        )}
       </form>
     </Container>
   );
