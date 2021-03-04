@@ -18,17 +18,29 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Alert from "@material-ui/lab/Alert";
 
 import styles from "./styles";
+import { useForm } from "../../util/form-hooks";
 
 const RegisterForm = () => {
   const classes = styles();
 
-  const onChange = () => {
-    console.log("changing values");
+  const callbackFunc = () => {
+    console.log("Running callback function");
   };
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-  };
+  const {
+    onChange,
+    onSubmit,
+    passwordVisibility,
+    confirmPasswordVisibility,
+    values,
+  } = useForm(callbackFunc, {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    showPassword: false,
+    showConfirmPassword: false,
+  });
 
   return (
     <>
@@ -56,6 +68,7 @@ const RegisterForm = () => {
                   name="username"
                   label="Username"
                   type="text"
+                  value={values.username}
                   onChange={onChange}
                   variant="outlined"
                   fullWidth
@@ -78,6 +91,7 @@ const RegisterForm = () => {
                   name="email"
                   label="Email"
                   type="email"
+                  value={values.email}
                   onChange={onChange}
                   variant="outlined"
                   fullWidth
@@ -105,6 +119,7 @@ const RegisterForm = () => {
                   <OutlinedInput
                     id="password"
                     name="password"
+                    value={values.password}
                     onChange={onChange}
                     endAdornment={
                       <InputAdornment position="end">
@@ -141,6 +156,7 @@ const RegisterForm = () => {
                   <OutlinedInput
                     id="confirmPassword"
                     name="confirmPassword"
+                    value={values.confirmPassword}
                     onChange={onChange}
                     endAdornment={
                       <InputAdornment position="end">
