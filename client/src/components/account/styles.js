@@ -6,7 +6,7 @@ const styles = makeStyles((theme) => ({
     color: "#fff",
   },
   form: {
-    paddingBottom: "20px",
+    paddingBottom: "40px",
     margin: "auto",
     [theme.breakpoints.up("sm")]: {
       width: "500px",

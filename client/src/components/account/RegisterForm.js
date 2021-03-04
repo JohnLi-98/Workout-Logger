@@ -119,6 +119,7 @@ const RegisterForm = () => {
                   <OutlinedInput
                     id="password"
                     name="password"
+                    type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={onChange}
                     endAdornment={
@@ -127,7 +128,14 @@ const RegisterForm = () => {
                           aria-label="toggle password visibility"
                           edge="end"
                           className={classes.visibilityIcon}
-                        ></IconButton>
+                          onClick={passwordVisibility}
+                        >
+                          {values.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
                       </InputAdornment>
                     }
                     labelWidth={90}
@@ -156,6 +164,7 @@ const RegisterForm = () => {
                   <OutlinedInput
                     id="confirmPassword"
                     name="confirmPassword"
+                    type={values.showConfirmPassword ? "text" : "password"}
                     value={values.confirmPassword}
                     onChange={onChange}
                     endAdornment={
@@ -164,7 +173,14 @@ const RegisterForm = () => {
                           aria-label="toggle password visibility"
                           edge="end"
                           className={classes.visibilityIcon}
-                        ></IconButton>
+                          onClick={confirmPasswordVisibility}
+                        >
+                          {values.showConfirmPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
                       </InputAdornment>
                     }
                     labelWidth={160}

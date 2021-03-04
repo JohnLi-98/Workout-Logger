@@ -10,7 +10,7 @@ import {
   OutlinedInput,
   TextField,
 } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle, Visibility, VisibilityOff } from "@material-ui/icons";
 import LockIcon from "@material-ui/icons/Lock";
 
 import styles from "./styles";
@@ -84,6 +84,7 @@ const LoginForm = () => {
                 <OutlinedInput
                   id="password"
                   name="password"
+                  type={values.showPassword ? "text" : "password"}
                   value={values.password}
                   onChange={onChange}
                   endAdornment={
@@ -92,7 +93,14 @@ const LoginForm = () => {
                         aria-label="toggle password visibility"
                         edge="end"
                         className={classes.visibilityIcon}
-                      ></IconButton>
+                        onClick={passwordVisibility}
+                      >
+                        {values.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
                     </InputAdornment>
                   }
                   labelWidth={90}
