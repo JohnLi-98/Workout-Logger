@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Drawer,
   IconButton,
@@ -10,6 +10,8 @@ import MuiListItem from "@material-ui/core/ListItem"; // Needed for style overri
 import { Menu } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
+
+import { AuthContext } from "../../context/auth";
 
 const useStyles = makeStyles({
   list: {
@@ -44,6 +46,7 @@ const ListItem = withStyles({
 const SideDrawer = ({ selectedItem, setSelectedItem }) => {
   const classes = useStyles();
   const [state, setState] = useState({ right: false });
+  const { user, logout } = useContext(AuthContext);
 
   const handleItemClick = (event, selected) => {
     setSelectedItem(selected);
@@ -61,7 +64,13 @@ const SideDrawer = ({ selectedItem, setSelectedItem }) => {
     setState({ ...state, [anchor]: open });
   };
 
-  const drawerList = (
+  const drawerList = user ? (
+    <List component="nav" style={{ padding: "0" }}>
+      <ListItem button onClick={logout}>
+        <ListItemText className={classes.item} primary="Logout" />
+      </ListItem>
+    </List>
+  ) : (
     <List component="nav" style={{ padding: "0" }}>
       <ListItem
         button

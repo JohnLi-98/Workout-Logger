@@ -23,7 +23,6 @@ import { useForm } from "../../util/form-hooks";
 import { REGISTER_USER } from "../../util/graphql-operations";
 
 const RegisterForm = ({ props }) => {
-  console.log(props.history);
   const classes = styles();
   const [errors, setErrors] = useState({});
 
