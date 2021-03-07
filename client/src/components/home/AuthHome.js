@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ButtonBase,
   Container,
   Grid,
+  IconButton,
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { Link as RouterLink } from "react-router-dom";
 
 import workoutImage from "../../images/workout.png";
 import exerciseImage from "../../images/exercise.png";
-//import AddSetModal from "./AddSetModal";
+import LogSetModal from "./LogSetModal";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -18,11 +20,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     padding: "20px 0",
   },
-  addSetIcon: {
+  iconContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    alignItems: "center",
-    paddingRight: "30px !important",
+    transform: "scale(2.5)",
+  },
+  icon: {
+    color: "white",
   },
   root: {
     display: "flex",
@@ -105,18 +109,34 @@ const useStyles = makeStyles((theme) => ({
 
 const AuthHome = ({ user }) => {
   const classes = useStyles();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalChange = (show) => {
+    setModalOpen(show);
+  };
 
   return (
     <Container maxWidth="md">
       <Grid container spacing={1}>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <div className={classes.heading}>
             <h1>Welcome back, {user.username}.</h1>
           </div>
         </Grid>
 
-        <Grid item xs={2} className={classes.addSetIcon}>
-          {/* <AddSetModal /> */}
+        <Grid item xs={2} className={classes.iconContainer}>
+          <IconButton
+            aria-label="Log a Set"
+            className={classes.icon}
+            title="Log a Set"
+            onClick={() => handleModalChange(true)}
+          >
+            <AddCircleIcon />
+          </IconButton>
+          <LogSetModal
+            modalOpen={modalOpen}
+            handleModalChange={handleModalChange}
+          />
         </Grid>
 
         <Grid item xs={6}>
