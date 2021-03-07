@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "20px 0",
+    marginTop: "30px",
   },
   iconContainer: {
     display: "flex",
@@ -33,26 +33,23 @@ const AuthHome = ({ user }) => {
 
   return (
     <Container maxWidth="md">
-      <Grid container spacing={1}>
-        <Grid item xs={9}>
-          <div className={classes.heading}>
-            <h1>Welcome back, {user.username}.</h1>
+      <Grid container spacing={2}>
+        <Grid item xs={12} className={classes.heading}>
+          <h1>Welcome back, {user.username}.</h1>
+          <div className={classes.iconContainer}>
+            <IconButton
+              aria-label="Log a Set"
+              className={classes.icon}
+              title="Log a Set"
+              onClick={() => handleModalChange(true)}
+            >
+              <AddCircleIcon />
+            </IconButton>
+            <LogSetModal
+              modalOpen={modalOpen}
+              handleModalChange={handleModalChange}
+            />
           </div>
-        </Grid>
-
-        <Grid item xs={2} className={classes.iconContainer}>
-          <IconButton
-            aria-label="Log a Set"
-            className={classes.icon}
-            title="Log a Set"
-            onClick={() => handleModalChange(true)}
-          >
-            <AddCircleIcon />
-          </IconButton>
-          <LogSetModal
-            modalOpen={modalOpen}
-            handleModalChange={handleModalChange}
-          />
         </Grid>
 
         <Grid item xs={6}>

@@ -1,5 +1,14 @@
 import React from "react";
-import { Backdrop, Button, Fade, makeStyles, Modal } from "@material-ui/core";
+import {
+  Backdrop,
+  Button,
+  Fade,
+  Grid,
+  makeStyles,
+  MenuItem,
+  Modal,
+  TextField,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -18,8 +27,24 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4, 5),
     height: "80vh",
     width: "70%",
+    [theme.breakpoints.up("sm")]: {
+      width: "60%",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "50%",
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "40%",
+    },
+    [theme.breakpoints.up("xl")]: {
+      height: "50vh",
+      width: "30%",
+    },
   },
-  modalButtonsDiv: {
+  formInput: {
+    margin: theme.spacing(1, 0),
+  },
+  buttonsDiv: {
     display: "flex",
     justifyContent: "flex-end",
     margin: "15px 0",
@@ -45,6 +70,11 @@ const useStyles = makeStyles((theme) => ({
 
 const LogSetModal = ({ modalOpen, handleModalChange }) => {
   const classes = useStyles();
+  const onChange = () => console.log("Changing");
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log("Submitting");
+  };
 
   return (
     <Modal
@@ -59,10 +89,89 @@ const LogSetModal = ({ modalOpen, handleModalChange }) => {
     >
       <Fade in={modalOpen}>
         <div className={classes.paper}>
-          <div>Modal</div>
-          <div className={classes.modalButtonsDiv}>
+          <div>
+            <h3>Log a Set</h3>
+            <p>Add a set to your account with this form.</p>
+            <form
+              onSubmit={onSubmit}
+              id="logSetForm"
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="exerciseName"
+                name="exerciseName"
+                label="Exercise Name"
+                variant="outlined"
+                fullWidth
+                select
+                className={classes.formInput}
+                onChange={onChange}
+              >
+                <MenuItem key="Bench Press" value="Bench Press">
+                  Bench Press
+                </MenuItem>
+
+                <MenuItem key="Deadlift" value="Deadlift">
+                  Deadlift
+                </MenuItem>
+
+                <MenuItem key="Squat" value="Squat">
+                  Squat
+                </MenuItem>
+
+                <MenuItem key="Military Press" value="Military Press">
+                  Military Press
+                </MenuItem>
+              </TextField>
+
+              <Grid container spacing={1} className={classes.formInput}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="weight"
+                    name="weight"
+                    label="Weight"
+                    type="number"
+                    min="0"
+                    variant="outlined"
+                    fullWidth
+                    onChange={onChange}
+                  />
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField
+                    id="reps"
+                    name="reps"
+                    label="Reps"
+                    type="number"
+                    min="0"
+                    variant="outlined"
+                    fullWidth
+                    onChange={onChange}
+                  />
+                </Grid>
+              </Grid>
+
+              <TextField
+                id="notes"
+                name="notes"
+                label="Notes (Optional)"
+                type="text"
+                variant="outlined"
+                fullWidth
+                multiline={true}
+                rows="4"
+                className={classes.formInput}
+                onChange={onChange}
+              />
+            </form>
+          </div>
+
+          <div className={classes.buttonsDiv}>
             <Button
               type="submit"
+              form="logSetForm"
               variant="outlined"
               className={classes.addButton}
             >
