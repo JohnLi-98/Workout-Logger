@@ -35,3 +35,26 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const LOG_SET = gql`
+  mutation logSet(
+    $exerciseName: String!
+    $weight: Float
+    $reps: Int
+    $notes: String
+  ) {
+    logSet(
+      logSetInput: {
+        exerciseName: $exerciseName
+        weight: $weight
+        reps: $reps
+        notes: $notes
+      }
+    ) {
+      weight
+      reps
+      notes
+      createdAt
+    }
+  }
+`;

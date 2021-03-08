@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Backdrop,
   Button,
@@ -9,6 +9,10 @@ import {
   Modal,
   TextField,
 } from "@material-ui/core";
+import { useMutation } from "@apollo/client";
+
+import { useForm } from "../../util/form-hooks";
+import { LOG_SET } from "../../util/graphql-operations";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -68,13 +72,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LogSetModal = ({ modalOpen, handleModalChange }) => {
+const LogSetModal = ({ modalOpen, errors, setErrors, handleModalChange }) => {
   const classes = useStyles();
-  const onChange = () => console.log("Changing");
-  const onSubmit = (event) => {
-    event.preventDefault();
-    console.log("Submitting");
-  };
+  const registerSet = () => logSet();
+  const { onChange, onSubmit, resetLogSetValues, values } = useForm(
+    registerSet,
+    {
+      exerciseName: "",
+      weight: 0,
+      reps: 0,
+      notes: "",
+    }
+  );
+  const [logSet] = useMutation(LOG_SET, {
+    update() {
+      console.log("Set added");
+      resetLogSetValues();
+      setErrors({});
+      handleModalChange(false);
+    },
+    onError(err) {
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
+    variables: values,
+  });
 
   return (
     <Modal
@@ -106,6 +127,8 @@ const LogSetModal = ({ modalOpen, handleModalChange }) => {
                 fullWidth
                 select
                 className={classes.formInput}
+                value={values.exerciseName}
+                error={errors.exerciseName ? true : false}
                 onChange={onChange}
               >
                 <MenuItem key="Bench Press" value="Bench Press">
@@ -135,7 +158,10 @@ const LogSetModal = ({ modalOpen, handleModalChange }) => {
                     min="0"
                     variant="outlined"
                     fullWidth
+                    value={values.weight}
+                    error={errors.weight ? true : false}
                     onChange={onChange}
+                    required
                   />
                 </Grid>
 
@@ -148,7 +174,10 @@ const LogSetModal = ({ modalOpen, handleModalChange }) => {
                     min="0"
                     variant="outlined"
                     fullWidth
+                    value={values.reps}
+                    error={errors.reps ? true : false}
                     onChange={onChange}
+                    required
                   />
                 </Grid>
               </Grid>
@@ -163,6 +192,7 @@ const LogSetModal = ({ modalOpen, handleModalChange }) => {
                 multiline={true}
                 rows="4"
                 className={classes.formInput}
+                value={values.notes}
                 onChange={onChange}
               />
             </form>

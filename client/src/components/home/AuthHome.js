@@ -25,9 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 const AuthHome = ({ user }) => {
   const classes = useStyles();
+  const [errors, setErrors] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalChange = (show) => {
+    setErrors({});
     setModalOpen(show);
   };
 
@@ -47,6 +49,8 @@ const AuthHome = ({ user }) => {
             </IconButton>
             <LogSetModal
               modalOpen={modalOpen}
+              errors={errors}
+              setErrors={setErrors}
               handleModalChange={handleModalChange}
             />
           </div>
