@@ -41,9 +41,9 @@ module.exports = gql`
   }
   input LogSetInput {
     exerciseName: String!
-    weight: Float!
-    reps: Int!
-    notes: String!
+    weight: Float
+    reps: Int
+    notes: String
   }
   input EditSetInput {
     exerciseId: ID!
