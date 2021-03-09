@@ -9,10 +9,11 @@ import {
   Modal,
   TextField,
 } from "@material-ui/core";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { useForm } from "../../util/form-hooks";
-import { LOG_SET } from "../../util/graphql-operations";
+import { GET_USER_EXERCISES, LOG_SET } from "../../util/graphql-operations";
+import AddExerciseModal from "./AddExerciseModal";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   buttonsDiv: {
     display: "flex",
     justifyContent: "flex-end",
-    margin: "15px 0",
+    paddingTop: "30px 0",
   },
   addButton: {
     margin: "0 10px",
@@ -72,24 +73,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LogSetModal = ({ modalOpen, errors, setErrors, handleModalChange }) => {
+const LogSetModal = ({
+  logSetModalOpen,
+  errors,
+  setErrors,
+  logSetModalChange,
+}) => {
   const classes = useStyles();
-  const registerSet = () => logSet();
-  const { onChange, onSubmit, resetLogSetValues, values } = useForm(
-    registerSet,
-    {
-      exerciseName: "",
-      weight: 0,
-      reps: 0,
-      notes: "",
-    }
+  const { data: { getAllExerciseLogs: exercises } = {} } = useQuery(
+    GET_USER_EXERCISES
   );
+  const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
+  const exerciseModalChange = (show) => {
+    setExerciseModalOpen(show);
+    logSetModalChange(!show);
+  };
+
+  const registerSet = () => logSet();
+  const { onChange, onSubmit, resetFormValues, values } = useForm(registerSet, {
+    exerciseName: "",
+    weight: 0,
+    reps: 0,
+    notes: "",
+  });
   const [logSet] = useMutation(LOG_SET, {
     update() {
-      console.log("Set added");
-      resetLogSetValues();
+      resetFormValues();
       setErrors({});
-      handleModalChange(false);
+      logSetModalChange(false);
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -98,127 +109,140 @@ const LogSetModal = ({ modalOpen, errors, setErrors, handleModalChange }) => {
   });
 
   return (
-    <Modal
-      className={classes.modal}
-      open={modalOpen}
-      onClose={() => handleModalChange(false)}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={modalOpen}>
-        <div className={classes.paper}>
-          <div>
-            <h3>Log a Set</h3>
-            <p>Add a set to your account with this form.</p>
-            <form
-              onSubmit={onSubmit}
-              id="logSetForm"
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id="exerciseName"
-                name="exerciseName"
-                label="Exercise Name"
-                variant="outlined"
-                fullWidth
-                select
-                className={classes.formInput}
-                value={values.exerciseName}
-                error={errors.exerciseName ? true : false}
-                onChange={onChange}
+    <>
+      <AddExerciseModal
+        exerciseModalOpen={exerciseModalOpen}
+        exerciseModalChange={exerciseModalChange}
+      />
+      <Modal
+        className={classes.modal}
+        open={logSetModalOpen}
+        onClose={() => {
+          logSetModalChange(false);
+          resetFormValues();
+        }}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={logSetModalOpen}>
+          <div className={classes.paper}>
+            <div>
+              <h3>Log a Set</h3>
+              <p>Add a set to your account with this form.</p>
+              <form
+                onSubmit={onSubmit}
+                id="logSetForm"
+                noValidate
+                autoComplete="off"
               >
-                <MenuItem key="Bench Press" value="Bench Press">
-                  Bench Press
-                </MenuItem>
+                <TextField
+                  id="exerciseName"
+                  name="exerciseName"
+                  label="Exercise Name"
+                  variant="outlined"
+                  fullWidth
+                  select
+                  className={classes.formInput}
+                  value={values.exerciseName}
+                  error={errors.exerciseName ? true : false}
+                  onChange={onChange}
+                >
+                  {/* <MenuItem disabled onClick={() => console.log("Clicked")}>
+                  Add Exercise
+                </MenuItem> */}
+                  <MenuItem
+                    onClick={() => exerciseModalChange(true)}
+                    value={""}
+                  >
+                    Add Exercise
+                  </MenuItem>
 
-                <MenuItem key="Deadlift" value="Deadlift">
-                  Deadlift
-                </MenuItem>
+                  {exercises &&
+                    exercises.map((exercise) => (
+                      <MenuItem key={exercise.id} value={exercise.exerciseName}>
+                        {exercise.exerciseName}
+                      </MenuItem>
+                    ))}
+                </TextField>
 
-                <MenuItem key="Squat" value="Squat">
-                  Squat
-                </MenuItem>
+                <Grid container spacing={1} className={classes.formInput}>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="weight"
+                      name="weight"
+                      label="Weight"
+                      type="number"
+                      min="0"
+                      variant="outlined"
+                      fullWidth
+                      value={values.weight}
+                      error={errors.weight ? true : false}
+                      onChange={onChange}
+                      required
+                    />
+                  </Grid>
 
-                <MenuItem key="Military Press" value="Military Press">
-                  Military Press
-                </MenuItem>
-              </TextField>
-
-              <Grid container spacing={1} className={classes.formInput}>
-                <Grid item xs={6}>
-                  <TextField
-                    id="weight"
-                    name="weight"
-                    label="Weight"
-                    type="number"
-                    min="0"
-                    variant="outlined"
-                    fullWidth
-                    value={values.weight}
-                    error={errors.weight ? true : false}
-                    onChange={onChange}
-                    required
-                  />
+                  <Grid item xs={6}>
+                    <TextField
+                      id="reps"
+                      name="reps"
+                      label="Reps"
+                      type="number"
+                      min="0"
+                      variant="outlined"
+                      fullWidth
+                      value={values.reps}
+                      error={errors.reps ? true : false}
+                      onChange={onChange}
+                      required
+                    />
+                  </Grid>
                 </Grid>
 
-                <Grid item xs={6}>
-                  <TextField
-                    id="reps"
-                    name="reps"
-                    label="Reps"
-                    type="number"
-                    min="0"
-                    variant="outlined"
-                    fullWidth
-                    value={values.reps}
-                    error={errors.reps ? true : false}
-                    onChange={onChange}
-                    required
-                  />
-                </Grid>
-              </Grid>
+                <TextField
+                  id="notes"
+                  name="notes"
+                  label="Notes (Optional)"
+                  type="text"
+                  variant="outlined"
+                  fullWidth
+                  multiline={true}
+                  rows="4"
+                  className={classes.formInput}
+                  value={values.notes}
+                  onChange={onChange}
+                />
+              </form>
+            </div>
 
-              <TextField
-                id="notes"
-                name="notes"
-                label="Notes (Optional)"
-                type="text"
+            <div className={classes.buttonsDiv}>
+              <Button
+                type="submit"
+                form="logSetForm"
                 variant="outlined"
-                fullWidth
-                multiline={true}
-                rows="4"
-                className={classes.formInput}
-                value={values.notes}
-                onChange={onChange}
-              />
-            </form>
-          </div>
+                className={classes.addButton}
+              >
+                Log Set
+              </Button>
 
-          <div className={classes.buttonsDiv}>
-            <Button
-              type="submit"
-              form="logSetForm"
-              variant="outlined"
-              className={classes.addButton}
-            >
-              Log Set
-            </Button>
-
-            <Button
-              variant="outlined"
-              className={classes.cancelButton}
-              onClick={() => handleModalChange(false)}
-            >
-              Cancel
-            </Button>
+              <Button
+                variant="outlined"
+                className={classes.cancelButton}
+                onClick={() => {
+                  logSetModalChange(false);
+                  resetFormValues();
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
-        </div>
-      </Fade>
-    </Modal>
+        </Fade>
+      </Modal>
+    </>
   );
 };
 

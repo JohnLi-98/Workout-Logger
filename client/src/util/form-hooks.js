@@ -26,7 +26,7 @@ export const useForm = (callback, initialState = {}) => {
     setValues({ ...values, showConfirmPassword: !values.showConfirmPassword });
   };
 
-  const resetLogSetValues = () => {
+  const resetFormValues = () => {
     setValues(initialState);
   };
 
@@ -35,7 +35,7 @@ export const useForm = (callback, initialState = {}) => {
     onSubmit,
     passwordVisibility,
     confirmPasswordVisibility,
-    resetLogSetValues,
+    resetFormValues,
     values,
   };
 };

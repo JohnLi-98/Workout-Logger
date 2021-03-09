@@ -36,6 +36,15 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const GET_USER_EXERCISES = gql`
+  {
+    getAllExerciseLogs {
+      id
+      exerciseName
+    }
+  }
+`;
+
 export const LOG_SET = gql`
   mutation logSet(
     $exerciseName: String!

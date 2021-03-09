@@ -26,11 +26,10 @@ const useStyles = makeStyles((theme) => ({
 const AuthHome = ({ user }) => {
   const classes = useStyles();
   const [errors, setErrors] = useState({});
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleModalChange = (show) => {
+  const [logSetModalOpen, setLogSetModalOpen] = useState(false);
+  const logSetModalChange = (show) => {
     setErrors({});
-    setModalOpen(show);
+    setLogSetModalOpen(show);
   };
 
   return (
@@ -43,15 +42,15 @@ const AuthHome = ({ user }) => {
               aria-label="Log a Set"
               className={classes.icon}
               title="Log a Set"
-              onClick={() => handleModalChange(true)}
+              onClick={() => logSetModalChange(true)}
             >
               <AddCircleIcon />
             </IconButton>
             <LogSetModal
-              modalOpen={modalOpen}
+              logSetModalOpen={logSetModalOpen}
               errors={errors}
               setErrors={setErrors}
-              handleModalChange={handleModalChange}
+              logSetModalChange={logSetModalChange}
             />
           </div>
         </Grid>
