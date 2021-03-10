@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "@material-ui/core";
+import { SnackbarProvider } from "notistack";
 
 import "./App.css";
 import { AuthProvider } from "./context/auth";
@@ -17,14 +18,16 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <Container maxWidth="lg">
-          <Route exact path="/" component={Home} />
-          <AuthRoute exact path="/account/login" component={Login} />
-          <AuthRoute exact path="/account/register" component={Register} />
-          <AuthUser exact path="/my-workout-logs" component={WorkoutLogs} />
-          <AuthUser exact path="/my-exercise-logs" component={ExerciseLogs} />
-        </Container>
+        <SnackbarProvider maxSnack={3}>
+          <Navbar />
+          <Container maxWidth="lg">
+            <Route exact path="/" component={Home} />
+            <AuthRoute exact path="/account/login" component={Login} />
+            <AuthRoute exact path="/account/register" component={Register} />
+            <AuthUser exact path="/my-workout-logs" component={WorkoutLogs} />
+            <AuthUser exact path="/my-exercise-logs" component={ExerciseLogs} />
+          </Container>
+        </SnackbarProvider>
       </Router>
     </AuthProvider>
   );

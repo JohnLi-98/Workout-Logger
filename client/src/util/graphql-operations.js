@@ -67,3 +67,12 @@ export const LOG_SET = gql`
     }
   }
 `;
+
+export const ADD_EXERCISE = gql`
+  mutation addExercise($exerciseName: String!) {
+    addExercise(exerciseName: $exerciseName) {
+      id
+      exerciseName
+    }
+  }
+`;

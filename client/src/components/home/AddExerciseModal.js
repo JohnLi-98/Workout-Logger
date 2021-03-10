@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Backdrop,
   Button,
@@ -8,8 +8,12 @@ import {
   Paper,
   TextField,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import { useMutation } from "@apollo/client";
+import { useSnackbar } from "notistack";
 
 import { useForm } from "../../util/form-hooks";
+import { ADD_EXERCISE } from "../../util/graphql-operations";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -34,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
+    width: "300px",
+  },
+  formInput: {
+    margin: theme.spacing(1, 0),
   },
   buttonsDiv: {
     display: "flex",
@@ -61,24 +69,36 @@ const useStyles = makeStyles((theme) => ({
 
 const AddExerciseModal = ({ exerciseModalOpen, exerciseModalChange }) => {
   const classes = useStyles();
-  const callbackFunc = () => {
-    console.log(values);
+  const { enqueueSnackbar } = useSnackbar();
+  const [errors, setErrors] = useState({});
+  const closeExerciseModal = () => {
+    resetFormValues();
+    setErrors({});
+    exerciseModalChange(false);
   };
+  const addExerciseCallback = () => addExercise();
   const { onSubmit, onChange, resetFormValues, values } = useForm(
-    callbackFunc,
+    addExerciseCallback,
     {
       exerciseName: "",
     }
   );
+  const [addExercise] = useMutation(ADD_EXERCISE, {
+    update() {
+      closeExerciseModal();
+      enqueueSnackbar("Exercise Added", { variant: "success" });
+    },
+    onError(err) {
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
+    variables: values,
+  });
 
   return (
     <Modal
       className={classes.modal}
       open={exerciseModalOpen}
-      onClose={() => {
-        exerciseModalChange(false);
-        resetFormValues();
-      }}
+      onClose={() => closeExerciseModal()}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -86,7 +106,6 @@ const AddExerciseModal = ({ exerciseModalOpen, exerciseModalChange }) => {
       }}
     >
       <Fade in={exerciseModalOpen}>
-        {/* <div className={classes.paper}>I am the exercise modal</div> */}
         <Paper className={classes.paper2}>
           <div>
             <h2>Add Exercise</h2>
@@ -106,10 +125,22 @@ const AddExerciseModal = ({ exerciseModalOpen, exerciseModalChange }) => {
                 onChange={onChange}
                 variant="outlined"
                 fullWidth
+                className={classes.formInput}
+                error={errors.exerciseName ? true : false}
                 required
               />
             </form>
           </div>
+
+          {Object.keys(errors).length > 0 && (
+            <div className={classes.formInput}>
+              <Alert variant="filled" severity="error">
+                {Object.values(errors).map((value) => (
+                  <li key={value}>{value}</li>
+                ))}
+              </Alert>
+            </div>
+          )}
 
           <div className={classes.buttonsDiv}>
             <Button
@@ -124,10 +155,7 @@ const AddExerciseModal = ({ exerciseModalOpen, exerciseModalChange }) => {
             <Button
               variant="outlined"
               className={classes.cancelButton}
-              onClick={() => {
-                exerciseModalChange(false);
-                resetFormValues();
-              }}
+              onClick={() => closeExerciseModal()}
             >
               Cancel
             </Button>

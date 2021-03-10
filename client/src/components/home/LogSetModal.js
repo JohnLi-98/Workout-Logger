@@ -9,7 +9,9 @@ import {
   Modal,
   TextField,
 } from "@material-ui/core";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useMutation, useQuery } from "@apollo/client";
+import { useSnackbar } from "notistack";
 
 import { useForm } from "../../util/form-hooks";
 import { GET_USER_EXERCISES, LOG_SET } from "../../util/graphql-operations";
@@ -31,23 +33,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     padding: theme.spacing(4, 5),
     height: "80vh",
-    width: "70%",
-    [theme.breakpoints.up("sm")]: {
-      width: "60%",
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "50%",
-    },
-    [theme.breakpoints.up("lg")]: {
-      width: "40%",
-    },
-    [theme.breakpoints.up("xl")]: {
-      height: "50vh",
-      width: "30%",
-    },
+    width: "400px",
   },
   formInput: {
     margin: theme.spacing(1, 0),
+  },
+  gridLeft: {
+    paddingRight: "5px",
+  },
+  gridRight: {
+    paddingLeft: "5px",
+  },
+  addExerciseItem: {
+    display: "flex",
+    justifyContent: "space-between",
   },
   buttonsDiv: {
     display: "flex",
@@ -88,6 +87,7 @@ const LogSetModal = ({
     setExerciseModalOpen(show);
     logSetModalChange(!show);
   };
+  const { enqueueSnackbar } = useSnackbar();
 
   const registerSet = () => logSet();
   const { onChange, onSubmit, resetFormValues, values } = useForm(registerSet, {
@@ -101,6 +101,7 @@ const LogSetModal = ({
       resetFormValues();
       setErrors({});
       logSetModalChange(false);
+      enqueueSnackbar("Set logged successfully", { variant: "success" });
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -150,14 +151,13 @@ const LogSetModal = ({
                   error={errors.exerciseName ? true : false}
                   onChange={onChange}
                 >
-                  {/* <MenuItem disabled onClick={() => console.log("Clicked")}>
-                  Add Exercise
-                </MenuItem> */}
                   <MenuItem
                     onClick={() => exerciseModalChange(true)}
                     value={""}
+                    className={classes.addExerciseItem}
                   >
-                    Add Exercise
+                    <span>Add Exercise</span>
+                    <AddCircleIcon />
                   </MenuItem>
 
                   {exercises &&
@@ -168,8 +168,8 @@ const LogSetModal = ({
                     ))}
                 </TextField>
 
-                <Grid container spacing={1} className={classes.formInput}>
-                  <Grid item xs={6}>
+                <Grid container className={classes.formInput}>
+                  <Grid item xs={6} className={classes.gridLeft}>
                     <TextField
                       id="weight"
                       name="weight"
@@ -185,7 +185,7 @@ const LogSetModal = ({
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item xs={6} className={classes.gridRight}>
                     <TextField
                       id="reps"
                       name="reps"

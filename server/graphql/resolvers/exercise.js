@@ -1,3 +1,5 @@
+const { UserInputError } = require("apollo-server");
+
 const checkAuth = require("../../utils/check-auth");
 const Exercise = require("../../models/Exercise");
 
@@ -48,12 +50,11 @@ module.exports = {
       const exerciseLog = await Exercise.find({
         user: user.id,
         exerciseName,
-        username: user.username,
       });
       if (exerciseLog.length !== 0) {
-        throw new Error("Already Exists", {
+        throw new UserInputError("Already Exists", {
           errors: {
-            exerciseName: "This exercise already exists in your logs",
+            exerciseName: "Exercise already exists",
           },
         });
       } else {
