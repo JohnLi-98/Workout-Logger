@@ -13,7 +13,10 @@ import { useMutation } from "@apollo/client";
 import { useSnackbar } from "notistack";
 
 import { useForm } from "../../util/form-hooks";
-import { ADD_EXERCISE } from "../../util/graphql-operations";
+import {
+  GET_USER_EXERCISES,
+  ADD_EXERCISE,
+} from "../../util/graphql-operations";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -84,7 +87,19 @@ const AddExerciseModal = ({ exerciseModalOpen, exerciseModalChange }) => {
     }
   );
   const [addExercise] = useMutation(ADD_EXERCISE, {
-    update() {
+    update(proxy, result) {
+      const data = proxy.readQuery({
+        query: GET_USER_EXERCISES,
+      });
+      proxy.writeQuery({
+        query: GET_USER_EXERCISES,
+        data: {
+          getAllExerciseLogs: [
+            result.data.addExercise,
+            ...data.getAllExerciseLogs,
+          ],
+        },
+      });
       closeExerciseModal();
       enqueueSnackbar("Exercise Added", { variant: "success" });
     },
