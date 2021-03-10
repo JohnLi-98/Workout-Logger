@@ -1,7 +1,9 @@
 import React from "react";
 
+import { ExerciseLogs as PageContent } from "../components/exercise-log/ExerciseLogs";
+
 const ExerciseLogs = () => {
-  return <div>Exercise Logs Page</div>;
+  return <PageContent />;
 };
 
 export default ExerciseLogs;

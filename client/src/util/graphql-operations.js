@@ -76,3 +76,19 @@ export const ADD_EXERCISE = gql`
     }
   }
 `;
+
+export const GET_EXERCISE_LOGS = gql`
+  {
+    getAllExerciseLogs {
+      id
+      exerciseName
+      sets {
+        id
+        weight
+        reps
+        createdAt
+        notes
+      }
+    }
+  }
+`;
