@@ -82,7 +82,6 @@ const LogSetModal = ({
   const { data: { getAllExerciseLogs: exercises } = {} } = useQuery(
     GET_USER_EXERCISES
   );
-  const [exerciseList, setExerciseList] = useState(exercises);
   const [exerciseModalOpen, setExerciseModalOpen] = useState(false);
   const exerciseModalChange = (show) => {
     setExerciseModalOpen(show);
