@@ -5,17 +5,10 @@ import { useQuery } from "@apollo/client";
 import { GET_EXERCISE_LOGS } from "../../util/graphql-operations";
 import LogsTable from "./LogsTable";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "300px",
-  },
-}));
+import styles from "./styles";
 
 export const ExerciseLogs = () => {
-  const classes = useStyles();
+  const classes = styles();
 
   const {
     loading,
@@ -23,13 +16,17 @@ export const ExerciseLogs = () => {
   } = useQuery(GET_EXERCISE_LOGS, { fetchPolicy: "cache-and-network" });
 
   return (
-    <Container maxWidth="md">
-      <Paper>
+    <Container maxWidth="md" className={classes.container}>
+      <Paper className={classes.heading}>
         <h1>Exercise Logs</h1>
+        <p>
+          View your progression and set history for each exercise by clicking on
+          it below.
+        </p>
       </Paper>
 
       {loading ? (
-        <Paper className={classes.paper}>
+        <Paper className={classes.loading}>
           <h1>Retrieving Logs...</h1>
         </Paper>
       ) : (

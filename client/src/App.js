@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import WorkoutLogs from "./pages/WorkoutLogs";
 import ExerciseLogs from "./pages/ExerciseLogs";
+import SingleExerciseLog from "./pages/SingleExerciseLog";
 
 function App() {
   return (
@@ -26,6 +27,11 @@ function App() {
             <AuthRoute exact path="/account/register" component={Register} />
             <AuthUser exact path="/my-workout-logs" component={WorkoutLogs} />
             <AuthUser exact path="/my-exercise-logs" component={ExerciseLogs} />
+            <AuthUser
+              exact
+              path="/my-exercise-logs/:exerciseId"
+              component={SingleExerciseLog}
+            />
           </Container>
         </SnackbarProvider>
       </Router>

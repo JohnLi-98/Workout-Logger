@@ -21,36 +21,14 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { Link as RouterLink } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    [theme.breakpoints.up("md")]: {
-      padding: "0 30px",
-    },
-  },
-  table: {
-    width: "100%",
-  },
-  padding: {
-    padding: "100px 0",
-  },
-  link: {
-    textDecoration: "none",
-    "&hover": {
-      textDecoration: "underline",
-    },
-  },
-  root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-  },
-}));
+import styles from "./styles";
+import { convertToDateTime } from "../../util/common-functions";
 
 const LogsTable = ({ exercises }) => {
-  const classes = useStyles();
-  console.log(exercises);
+  const classes = styles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (newPage) => {
     setPage(newPage);
   };
   const handleRPPChange = (event) => {
@@ -65,10 +43,10 @@ const LogsTable = ({ exercises }) => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <h2>Exercise</h2>
+                <h2>Exercise:</h2>
               </TableCell>
               <TableCell align="right">
-                <h2>Duration:</h2>
+                <h2>Started:</h2>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -101,7 +79,11 @@ const LogsTable = ({ exercises }) => {
                       {exercise.exerciseName}
                     </Link>
                   </TableCell>
-                  <TableCell align="right">{exercise.exerciseName}</TableCell>
+                  <TableCell align="right">
+                    {exercise.sets[0]
+                      ? convertToDateTime(exercise.sets[0].createdAt)
+                      : "N/A"}
+                  </TableCell>
                 </TableRow>
               ))
             )}
@@ -132,7 +114,7 @@ const LogsTable = ({ exercises }) => {
 };
 
 const TablePaginationActions = (props) => {
-  const classes = useStyles();
+  const classes = styles();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
   const handleFirstPageClick = (event) => {
