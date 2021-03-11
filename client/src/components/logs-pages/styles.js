@@ -12,7 +12,7 @@ const styles = makeStyles((theme) => ({
       padding: theme.spacing(1, 5, 2),
     },
   },
-  loading: {
+  centerContent: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -40,6 +40,11 @@ const styles = makeStyles((theme) => ({
   root: {
     flexShrink: 0,
     marginLeft: theme.spacing(2.5),
+  },
+
+  // SingleExerciseLog Component
+  accordionContainer: {
+    width: "100%",
   },
 }));
 

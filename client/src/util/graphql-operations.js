@@ -92,3 +92,19 @@ export const GET_EXERCISE_LOGS = gql`
     }
   }
 `;
+
+export const GET_EXERCISE_LOG = gql`
+  query($exerciseId: ID!) {
+    getExerciseLog(exerciseId: $exerciseId) {
+      id
+      exerciseName
+      sets {
+        id
+        weight
+        reps
+        createdAt
+        notes
+      }
+    }
+  }
+`;

@@ -26,7 +26,7 @@ export const ExerciseLogs = () => {
       </Paper>
 
       {loading ? (
-        <Paper className={classes.loading}>
+        <Paper className={classes.centerContent}>
           <h1>Retrieving Logs...</h1>
         </Paper>
       ) : (

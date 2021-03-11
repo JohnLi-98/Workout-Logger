@@ -1,9 +1,9 @@
 import React from "react";
 
-const ExerciseLog = (props) => {
-  const exerciseId = props.match.params.exerciseId;
-  console.log(exerciseId);
-  return <div>I'm the exercise log page</div>;
+import { SingleExerciseLog as ExerciseLog } from "../components/logs-pages/SingleExerciseLog";
+
+const SingleExerciseLog = (props) => {
+  return <ExerciseLog props={props} />;
 };
 
-export default ExerciseLog;
+export default SingleExerciseLog;
