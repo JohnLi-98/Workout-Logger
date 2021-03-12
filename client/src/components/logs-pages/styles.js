@@ -43,9 +43,6 @@ const styles = makeStyles((theme) => ({
   },
 
   // SingleExerciseLog Component
-  accordionContainer: {
-    width: "100%",
-  },
 }));
 
 export default styles;

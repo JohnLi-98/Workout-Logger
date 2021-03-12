@@ -28,7 +28,7 @@ const LogsTable = ({ exercises }) => {
   const classes = styles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
   const handleRPPChange = (event) => {
