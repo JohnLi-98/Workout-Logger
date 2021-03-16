@@ -179,6 +179,8 @@ module.exports = {
           ],
         }
       ).exec();
+
+      return "Set edited succesfully";
     },
   },
 };

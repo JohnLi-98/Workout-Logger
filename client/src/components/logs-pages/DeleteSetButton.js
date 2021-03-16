@@ -20,8 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DeleteSet = ({ exerciseId, setId }) => {
-  "";
+const DeleteSetButton = ({ exerciseId, setId }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -96,4 +95,4 @@ const DeleteSet = ({ exerciseId, setId }) => {
   );
 };
 
-export default DeleteSet;
+export default DeleteSetButton;

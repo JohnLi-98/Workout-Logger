@@ -26,7 +26,8 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import styles from "./styles";
 import { convertToDateTime } from "../../util/common-functions";
-import DeleteSet from "./DeleteSet";
+import DeleteSetButton from "./DeleteSetButton";
+import EditSetButton from "./EditSetButton";
 
 const TablePaginationActions = (props) => {
   const classes = styles();
@@ -152,15 +153,12 @@ const SetsTable = ({ exerciseId, sets }) => {
                       </Grid>
 
                       <Grid container justify="flex-end">
-                        <IconButton
-                          aria-label="edit set"
-                          title="Edit Set"
-                          className={classes.editButton}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                        <EditSetButton exerciseId={exerciseId} set={set} />
 
-                        <DeleteSet exerciseId={exerciseId} setId={set.id} />
+                        <DeleteSetButton
+                          exerciseId={exerciseId}
+                          setId={set.id}
+                        />
                       </Grid>
                     </Grid>
                   </AccordionDetails>

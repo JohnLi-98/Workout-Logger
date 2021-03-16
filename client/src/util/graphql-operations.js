@@ -114,3 +114,23 @@ export const DELETE_SET = gql`
     deleteSet(exerciseId: $exerciseId, setId: $setId)
   }
 `;
+
+export const EDIT_SET = gql`
+  mutation editSet(
+    $exerciseId: ID!
+    $setId: ID!
+    $weight: Float
+    $reps: Int
+    notes: String
+  ) {
+    editSet(
+      editSetInput: {
+        exerciseId: $exerciseId
+        setId: $setId
+        weight: $weight
+        reps: $reps
+        notes: $notes
+      }
+    )
+  }
+`;
