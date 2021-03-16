@@ -43,6 +43,21 @@ const styles = makeStyles((theme) => ({
   },
 
   // SingleExerciseLog Component
+
+  // SetsTable Component
+  accordionSummary: {
+    backgroundColor: "#d3d3d3",
+  },
+  editButton: {
+    "&:hover": {
+      color: "#7289da",
+    },
+  },
+  deleteButton: {
+    "&:hover": {
+      color: "red",
+    },
+  },
 }));
 
 export default styles;

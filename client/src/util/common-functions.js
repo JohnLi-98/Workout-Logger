@@ -1,28 +1,53 @@
 import { formatError } from "graphql";
 
+const ordinal = (date) => {
+  if (date > 3 && date < 21) return "th";
+  switch (date % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
 export const convertToDateTime = (timestamp) => {
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const days = [
+    "",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
   const date = new Date(timestamp);
   const year = date.getFullYear();
   const month = months[date.getMonth()];
-  const day = date.getDate();
+  const monthDate = date.getDate();
+  const day = days[date.getDay()];
   const hour = "0" + date.getHours();
   const min = "0" + date.getMinutes();
-  const formattedDate = `${day} ${month} ${year} - ${hour.substr(
-    -2
-  )}:${min.substr(-2)}`;
+  const formattedDate = `${day}, ${
+    monthDate + ordinal(monthDate)
+  } ${month} ${year} - ${hour.substr(-2)}:${min.substr(-2)}`;
   return formattedDate;
 };

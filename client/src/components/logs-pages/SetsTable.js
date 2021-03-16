@@ -4,6 +4,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
+  Grid,
   IconButton,
   Table,
   TableBody,
@@ -20,9 +22,12 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import styles from "./styles";
 import { convertToDateTime } from "../../util/common-functions";
+import DeleteSet from "./DeleteSet";
 
 const TablePaginationActions = (props) => {
   const classes = styles();
@@ -119,14 +124,46 @@ const SetsTable = ({ sets }) => {
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel-content"
+                    className={classes.accordionSummary}
                   >
-                    <p>{convertToDateTime(set.createdAt)}</p>
+                    <p>{`${convertToDateTime(set.createdAt)}: ${set.reps} ${
+                      set.reps === 1 ? "rep" : "reps"
+                    } @ ${set.weight} kg`}</p>
                   </AccordionSummary>
 
                   <AccordionDetails>
-                    <div>{set.weight}</div>
-                    <div>{set.reps}</div>
-                    <div>{set.notes}</div>
+                    <Grid container direction="column" justify="space-between">
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <p>{`Weight: ${set.weight} kg`}</p>
+                          <p>Reps: {set.reps}</p>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <p>
+                            Set logged on: {convertToDateTime(set.createdAt)}
+                          </p>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <p>
+                            Notes: {set.notes.length > 0 ? set.notes : "N/A"}
+                          </p>
+                        </Grid>
+                      </Grid>
+
+                      <Grid container justify="flex-end">
+                        <IconButton
+                          aria-label="edit set"
+                          title="Edit Set"
+                          className={classes.editButton}
+                        >
+                          <EditIcon />
+                        </IconButton>
+
+                        <DeleteSet />
+                      </Grid>
+                    </Grid>
                   </AccordionDetails>
                 </Accordion>
               </TableCell>
