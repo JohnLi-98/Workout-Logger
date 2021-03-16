@@ -23,7 +23,6 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 import styles from "./styles";
 import { convertToDateTime } from "../../util/common-functions";
@@ -98,7 +97,7 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-const SetsTable = ({ sets }) => {
+const SetsTable = ({ exerciseId, sets }) => {
   const classes = styles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -161,7 +160,7 @@ const SetsTable = ({ sets }) => {
                           <EditIcon />
                         </IconButton>
 
-                        <DeleteSet />
+                        <DeleteSet exerciseId={exerciseId} setId={set.id} />
                       </Grid>
                     </Grid>
                   </AccordionDetails>

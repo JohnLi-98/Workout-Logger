@@ -64,7 +64,7 @@ module.exports = gql`
     login(loginInput: LoginInput): User!
     register(registerInput: RegisterInput): User!
     logSet(logSetInput: LogSetInput): Set!
-    deleteSet(exerciseId: ID!, setId: ID!): Set
+    deleteSet(exerciseId: ID!, setId: ID!): String!
     editSet(editSetInput: EditSetInput): Set
     addExercise(exerciseName: String!): Exercise!
   }

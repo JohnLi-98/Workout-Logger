@@ -137,6 +137,7 @@ module.exports = {
       } else {
         throw new Error("Workout log not found");
       }
+      return "Set deleted successfully";
     },
 
     async editSet(

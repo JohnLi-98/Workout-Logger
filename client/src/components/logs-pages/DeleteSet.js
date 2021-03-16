@@ -10,14 +10,18 @@ import {
   Slide,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { useMutation } from "@apollo/client";
+import { useSnackbar } from "notistack";
 
 import styles from "./styles";
+import { DELETE_SET, GET_EXERCISE_LOG } from "../../util/graphql-operations";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DeleteSet = () => {
+const DeleteSet = ({ exerciseId, setId }) => {
+  "";
   const classes = styles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -26,6 +30,35 @@ const DeleteSet = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [deleteSet] = useMutation(DELETE_SET, {
+    update(proxy) {
+      setOpen(false);
+      const data = proxy.readQuery({
+        query: GET_EXERCISE_LOG,
+        variables: {
+          exerciseId,
+        },
+      });
+      proxy.writeQuery({
+        query: GET_EXERCISE_LOG,
+        variables: {
+          exerciseId,
+        },
+        data: {
+          getExerciseLog: data.getExerciseLog.sets.filter(
+            (set) => set.id !== setId
+          ),
+        },
+      });
+      enqueueSnackbar("Set deleted successfully", { variant: "success" });
+    },
+    variables: {
+      exerciseId,
+      setId,
+    },
+  });
 
   return (
     <div>
@@ -54,7 +87,7 @@ const DeleteSet = () => {
           <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={deleteSet} color="primary">
             Confirm
           </Button>
         </DialogActions>

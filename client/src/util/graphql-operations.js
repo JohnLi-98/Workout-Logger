@@ -108,3 +108,9 @@ export const GET_EXERCISE_LOG = gql`
     }
   }
 `;
+
+export const DELETE_SET = gql`
+  mutation deleteSet($exerciseId: ID!, $setId: ID!) {
+    deleteSet(exerciseId: $exerciseId, setId: $setId)
+  }
+`;

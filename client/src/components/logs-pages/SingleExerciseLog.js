@@ -53,7 +53,7 @@ export const SingleExerciseLog = ({ props }) => {
 
           <Paper className={classes.paper}>
             {exercise.sets[0] ? (
-              <SetsTable sets={exercise.sets} />
+              <SetsTable exerciseId={exercise.id} sets={exercise.sets} />
             ) : (
               <Paper className={classes.centerContent}>
                 <p>No sets logged for this exercise</p>
