@@ -48,9 +48,9 @@ module.exports = gql`
   input EditSetInput {
     exerciseId: ID!
     setId: ID!
-    weight: Float!
-    reps: Int!
-    notes: String!
+    weight: Float
+    reps: Int
+    notes: String
   }
 
   type Query {

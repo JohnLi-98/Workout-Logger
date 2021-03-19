@@ -71,3 +71,19 @@ module.exports.validateLogSetInput = (exerciseName, weight, reps) => {
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateEditSetInput = (weight, reps) => {
+  const errors = {};
+  if (weight === null || weight === undefined || isNaN(weight)) {
+    errors.weight = "Enter the weight you did for this set";
+  }
+
+  if (reps === null || reps === undefined || isNaN(reps)) {
+    errors.reps = "Enter the number of repetitions you did for this set";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};

@@ -1,6 +1,9 @@
 const { UserInputError } = require("apollo-server");
 
-const { validateLogSetInput } = require("../../utils/validators");
+const {
+  validateLogSetInput,
+  validateEditSetInput,
+} = require("../../utils/validators");
 const checkAuth = require("../../utils/check-auth");
 const Set = require("../../models/Set");
 const Exercise = require("../../models/Exercise");
@@ -145,6 +148,10 @@ module.exports = {
       { editSetInput: { exerciseId, setId, weight, reps, notes } },
       context
     ) {
+      const { errors, valid } = validateEditSetInput(weight, reps);
+      if (!valid) {
+        throw new UserInputError("Errors", { errors });
+      }
       const user = checkAuth(context);
       await Exercise.updateOne(
         {

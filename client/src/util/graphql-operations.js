@@ -121,7 +121,7 @@ export const EDIT_SET = gql`
     $setId: ID!
     $weight: Float
     $reps: Int
-    notes: String
+    $notes: String
   ) {
     editSet(
       editSetInput: {

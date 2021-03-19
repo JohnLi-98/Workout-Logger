@@ -58,6 +58,17 @@ const styles = makeStyles((theme) => ({
       color: "red",
     },
   },
+
+  // EditSetForm Component
+  formInput: {
+    margin: theme.spacing(1, 0),
+  },
+  gridLeft: {
+    paddingRight: "5px",
+  },
+  gridRight: {
+    paddingLeft: "5px",
+  },
 }));
 
 export default styles;

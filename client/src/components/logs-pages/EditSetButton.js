@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -12,6 +10,7 @@ import {
 import EditIcon from "@material-ui/icons/Edit";
 
 import styles from "./styles";
+import EditSetForm from "./EditSetForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,24 +41,17 @@ const EditSetButton = ({ exerciseId, set }) => {
         open={open}
         TransitionComponent={Transition}
         maxWidth="sm"
-        fullWidth
         onClose={handleClose}
       >
         <DialogTitle>Edit Set</DialogTitle>
         <DialogContent>
           <DialogContentText>Edit the current set below</DialogContentText>
-          {
-            // Add Form Here
-          }
+          <EditSetForm
+            exerciseId={exerciseId}
+            set={set}
+            handleClose={handleClose}
+          />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
       </Dialog>
     </div>
   );
