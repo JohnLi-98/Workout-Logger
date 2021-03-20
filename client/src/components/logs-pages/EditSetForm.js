@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 
 import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
-import { EDIT_SET } from "../../util/graphql-operations";
+import { EDIT_SET, GET_EXERCISE_LOG } from "../../util/graphql-operations";
 
 const EditSetForm = ({ exerciseId, set, handleClose }) => {
   const { id } = set;
@@ -19,7 +19,22 @@ const EditSetForm = ({ exerciseId, set, handleClose }) => {
     notes: set.notes,
   });
   const [editSet] = useMutation(EDIT_SET, {
-    update() {
+    update(proxy) {
+      const data = proxy.readQuery({
+        query: GET_EXERCISE_LOG,
+        variables: {
+          exerciseId,
+        },
+      });
+      proxy.writeQuery({
+        query: GET_EXERCISE_LOG,
+        variables: {
+          exerciseId,
+        },
+        data: {
+          getExerciseLog: data,
+        },
+      });
       enqueueSnackbar("Set edited", { variant: "success" });
       handleClose();
     },
