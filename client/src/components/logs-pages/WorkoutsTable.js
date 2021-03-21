@@ -23,7 +23,16 @@ import { Link as RouterLink } from "react-router-dom";
 import styles from "./styles";
 import { convertToDateTime } from "../../util/common-functions";
 
-const LogsTable = ({ exercises }) => {
+const workoutDuration = (workoutStart, lastSet) => {
+  let duration = Math.ceil((lastSet - workoutStart) / 1000 / 60);
+  duration === 1 ? (duration += " minute") : (duration += " minutes");
+  if (workoutStart + 14400000 > Date.now()) {
+    duration += " (In Progress)";
+  }
+  return duration;
+};
+
+const WorkoutsTable = ({ workouts }) => {
   const classes = styles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -42,48 +51,47 @@ const LogsTable = ({ exercises }) => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <h2>Exercise:</h2>
+                <h2>Date Done:</h2>
               </TableCell>
               <TableCell align="right">
-                <h2>Started:</h2>
+                <h2>Duration:</h2>
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {exercises.length === 0 ? (
+            {workouts.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={5}
                   align="center"
                   className={classes.padding}
                 >
-                  You have no exercise logs
+                  You have no workouts logged
                 </TableCell>
               </TableRow>
             ) : (
               (rowsPerPage > 0
-                ? exercises.slice(
+                ? workouts.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : exercises
-              ).map((exercise) => (
-                <TableRow key={exercise.id}>
+                : workouts
+              ).map((workout) => (
+                <TableRow key={workout.id}>
                   <TableCell>
                     <Link
                       component={RouterLink}
-                      to={`my-exercise-logs/${exercise.id}`}
+                      to={`my-workout-logs/${workout.id}`}
                     >
-                      {exercise.exerciseName}
+                      {convertToDateTime(workout.createdAt)}
                     </Link>
                   </TableCell>
                   <TableCell align="right">
-                    {exercise.sets[0]
-                      ? convertToDateTime(
-                          exercise.sets[exercise.sets.length - 1].createdAt
-                        )
-                      : "N/A"}
+                    {workoutDuration(
+                      workout.createdAt,
+                      workout.exercises[0].sets[0].createdAt
+                    )}
                   </TableCell>
                 </TableRow>
               ))
@@ -95,7 +103,7 @@ const LogsTable = ({ exercises }) => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 20, { label: "All", value: -1 }]}
                 colSpan={3}
-                count={exercises.length}
+                count={workouts.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -183,4 +191,4 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default LogsTable;
+export default WorkoutsTable;

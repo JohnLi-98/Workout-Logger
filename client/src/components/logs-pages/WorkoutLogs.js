@@ -2,35 +2,33 @@ import React from "react";
 import { Container, Paper } from "@material-ui/core";
 import { useQuery } from "@apollo/client";
 
-import { GET_EXERCISE_LOGS } from "../../util/graphql-operations";
-import LogsTable from "./LogsTable";
-
 import styles from "./styles";
+import { GET_WORKOUT_LOGS } from "../../util/graphql-operations";
+import WorkoutsTable from "./WorkoutsTable";
 
-export const ExerciseLogs = () => {
+export const WorkoutLogs = () => {
   const classes = styles();
-
   const {
     loading,
-    data: { getAllExerciseLogs: exerciseLogs } = {},
-  } = useQuery(GET_EXERCISE_LOGS, { fetchPolicy: "cache-and-network" });
+    data: { getAllWorkoutLogs: workoutLogs } = {},
+  } = useQuery(GET_WORKOUT_LOGS, { fetchPolicy: "cache-and-network" });
 
   return (
     <Container maxWidth="md" className={classes.container}>
       <Paper className={classes.heading}>
-        <h1>Exercise Logs</h1>
+        <h1>Workout Logs</h1>
         <p>
-          View your progression and set history for each exercise by clicking on
-          it below.
+          View your progression and history for each workout by clicking on it
+          below.
         </p>
       </Paper>
 
       {loading ? (
         <Paper className={classes.centerContent}>
-          <h1>Retrieving Logs...</h1>
+          <h1>Retrieving Workouts...</h1>
         </Paper>
       ) : (
-        <LogsTable exercises={exerciseLogs} />
+        <WorkoutsTable workouts={workoutLogs} />
       )}
     </Container>
   );

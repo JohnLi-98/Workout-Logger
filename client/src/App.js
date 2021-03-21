@@ -14,6 +14,7 @@ import Register from "./pages/Register";
 import WorkoutLogs from "./pages/WorkoutLogs";
 import ExerciseLogs from "./pages/ExerciseLogs";
 import SingleExerciseLog from "./pages/SingleExerciseLog";
+import SingleWorkoutLog from "./pages/SingleWorkoutLog";
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
               exact
               path="/my-exercise-logs/:exerciseId"
               component={SingleExerciseLog}
+            />
+            <AuthUser
+              exact
+              path="/my-workout-logs/:workoutId"
+              component={SingleWorkoutLog}
             />
           </Container>
         </SnackbarProvider>

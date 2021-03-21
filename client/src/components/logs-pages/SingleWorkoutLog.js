@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
 import { Container, Link, Paper } from "@material-ui/core";
+import { useQuery } from "@apollo/client";
 import { Link as RouterLink } from "react-router-dom";
 
 import styles from "./styles";
-import { GET_EXERCISE_LOG } from "../../util/graphql-operations";
-import SetsTable from "./SetsTable";
+import { GET_WORKOUT_LOG } from "../../util/graphql-operations";
+import { convertToDateTime } from "../../util/common-functions";
 
-export const SingleExerciseLog = ({ props }) => {
+export const SingleWorkoutLog = ({ props }) => {
   const classes = styles();
-  const [error, setError] = useState();
-  const exerciseId = props.match.params.exerciseId;
-  const { loading, data: { getExerciseLog: exercise } = {} } = useQuery(
-    GET_EXERCISE_LOG,
+  const workoutId = props.match.params.workoutId;
+  const [error, setError] = useState({});
+  const { loading, data: { getWorkoutLog: workout } = {} } = useQuery(
+    GET_WORKOUT_LOG,
     {
       onError(err) {
-        setError(err.graphQLErrors[0].message);
+        console.log(err);
       },
       variables: {
-        exerciseId,
+        workoutId,
       },
     }
   );
@@ -31,11 +31,11 @@ export const SingleExerciseLog = ({ props }) => {
         </Paper>
       ) : (
         <>
-          {exercise ? (
+          {workout ? (
             <Paper className={classes.heading}>
-              <h1>{exercise.exerciseName}</h1>
+              <h1>{convertToDateTime(workout.createdAt)}</h1>
               <p>
-                {`View your progression and set history for ${exercise.exerciseName} below.`}
+                {`View your progression and set history for the workout below.`}
               </p>
             </Paper>
           ) : (
@@ -43,7 +43,7 @@ export const SingleExerciseLog = ({ props }) => {
               <h1>Error</h1>
               <p>
                 {`${error}. `}
-                <Link component={RouterLink} to="/my-exercise-logs">
+                <Link component={RouterLink} to="/my-workout-logs">
                   Back to List of Logs
                 </Link>
               </p>
@@ -51,13 +51,9 @@ export const SingleExerciseLog = ({ props }) => {
           )}
 
           <Paper className={classes.paper}>
-            {exercise.sets[0] ? (
-              <SetsTable exerciseId={exercise.id} sets={exercise.sets} />
-            ) : (
-              <Paper className={classes.centerContent}>
-                <p>No sets logged for this exercise</p>
-              </Paper>
-            )}
+            {workout.exercises.map((exercise) => (
+              <h2>{exercise.exerciseName}</h2>
+            ))}
           </Paper>
         </>
       )}

@@ -134,3 +134,42 @@ export const EDIT_SET = gql`
     )
   }
 `;
+
+export const GET_WORKOUT_LOGS = gql`
+  {
+    getAllWorkoutLogs {
+      id
+      workoutName
+      createdAt
+      notes
+      exercises {
+        exerciseName
+        sets {
+          weight
+          reps
+          createdAt
+          notes
+        }
+      }
+    }
+  }
+`;
+
+export const GET_WORKOUT_LOG = gql`
+  query($workoutId: ID!) {
+    getWorkoutLog(workoutId: $workoutId) {
+      id
+      createdAt
+      notes
+      exercises {
+        exerciseName
+        sets {
+          weight
+          reps
+          createdAt
+          notes
+        }
+      }
+    }
+  }
+`;
