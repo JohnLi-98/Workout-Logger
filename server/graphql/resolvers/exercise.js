@@ -11,12 +11,7 @@ module.exports = {
         const allExerciseLogs = await Exercise.find({
           user: user.id,
         }).sort({ createdAt: -1 });
-        if (allExerciseLogs) {
-          return allExerciseLogs;
-        } else {
-          throw new Error("Unable to fetch exercise logs");
-          s;
-        }
+        return allExerciseLogs;
       } catch (err) {
         throw new Error(err);
       }

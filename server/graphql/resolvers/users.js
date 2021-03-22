@@ -9,7 +9,7 @@ const {
 const User = require("../../models/User");
 const { SECRET_KEY } = require("../../config");
 
-function generateToken(user) {
+const generateToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
@@ -19,7 +19,7 @@ function generateToken(user) {
     SECRET_KEY,
     { expiresIn: "1h" }
   );
-}
+};
 
 module.exports = {
   Mutation: {
@@ -50,6 +50,7 @@ module.exports = {
         token,
       };
     },
+
     async register(
       _,
       { registerInput: { username, email, password, confirmPassword } }
