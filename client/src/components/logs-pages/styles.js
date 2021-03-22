@@ -69,6 +69,14 @@ const styles = makeStyles((theme) => ({
   gridRight: {
     paddingLeft: "5px",
   },
+
+  // WorkoutInfo Component
+  root: {
+    padding: theme.spacing(2),
+  },
+  accordion: {
+    padding: theme.spacing(2, 0),
+  },
 }));
 
 export default styles;

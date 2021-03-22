@@ -5,9 +5,13 @@ import { useSnackbar } from "notistack";
 
 import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
-import { EDIT_SET, GET_EXERCISE_LOG } from "../../util/graphql-operations";
+import {
+  EDIT_SET,
+  GET_EXERCISE_LOG,
+  GET_WORKOUT_LOG,
+} from "../../util/graphql-operations";
 
-const EditSetForm = ({ exerciseId, set, handleClose }) => {
+const EditSetForm = ({ workoutId, exerciseId, set, handleClose }) => {
   const { id } = set;
   const classes = styles();
   const [errors, setErrors] = useState({});
@@ -26,6 +30,7 @@ const EditSetForm = ({ exerciseId, set, handleClose }) => {
           exerciseId,
         },
       });
+
       proxy.writeQuery({
         query: GET_EXERCISE_LOG,
         variables: {
@@ -35,6 +40,25 @@ const EditSetForm = ({ exerciseId, set, handleClose }) => {
           getExerciseLog: data,
         },
       });
+
+      if (workoutId) {
+        const data = proxy.readQuery({
+          query: GET_WORKOUT_LOG,
+          variables: {
+            workoutId,
+          },
+        });
+        proxy.writeQuery({
+          query: GET_WORKOUT_LOG,
+          variables: {
+            workoutId,
+          },
+          data: {
+            getWorkoutLog: data,
+          },
+        });
+      }
+
       enqueueSnackbar("Set edited", { variant: "success" });
       handleClose();
     },

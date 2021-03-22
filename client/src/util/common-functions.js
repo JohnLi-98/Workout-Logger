@@ -30,14 +30,13 @@ export const convertToDateTime = (timestamp) => {
     "December",
   ];
   const days = [
-    "",
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ];
   const date = new Date(timestamp);
   const year = date.getFullYear();

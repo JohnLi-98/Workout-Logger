@@ -143,8 +143,10 @@ export const GET_WORKOUT_LOGS = gql`
       createdAt
       notes
       exercises {
+        id
         exerciseName
         sets {
+          id
           weight
           reps
           createdAt
@@ -162,8 +164,10 @@ export const GET_WORKOUT_LOG = gql`
       createdAt
       notes
       exercises {
+        id
         exerciseName
         sets {
+          id
           weight
           reps
           createdAt

@@ -14,13 +14,17 @@ import { useMutation } from "@apollo/client";
 import { useSnackbar } from "notistack";
 
 import styles from "./styles";
-import { DELETE_SET, GET_EXERCISE_LOG } from "../../util/graphql-operations";
+import {
+  DELETE_SET,
+  GET_EXERCISE_LOG,
+  GET_WORKOUT_LOG,
+} from "../../util/graphql-operations";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DeleteSetButton = ({ exerciseId, setId }) => {
+const DeleteSetButton = ({ workoutId, exerciseId, setId }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -34,23 +38,42 @@ const DeleteSetButton = ({ exerciseId, setId }) => {
   const [deleteSet] = useMutation(DELETE_SET, {
     update(proxy) {
       setOpen(false);
-      const data = proxy.readQuery({
-        query: GET_EXERCISE_LOG,
-        variables: {
-          exerciseId,
-        },
-      });
-      proxy.writeQuery({
-        query: GET_EXERCISE_LOG,
-        variables: {
-          exerciseId,
-        },
-        data: {
-          getExerciseLog: data.getExerciseLog.sets.filter(
-            (set) => set.id !== setId
-          ),
-        },
-      });
+
+      if (workoutId) {
+        const data = proxy.readQuery({
+          query: GET_WORKOUT_LOG,
+          variables: {
+            workoutId,
+          },
+        });
+        proxy.writeQuery({
+          query: GET_WORKOUT_LOG,
+          variables: {
+            workoutId,
+          },
+          data: {
+            getWorkoutLog: data,
+          },
+        });
+      } else {
+        const data = proxy.readQuery({
+          query: GET_EXERCISE_LOG,
+          variables: {
+            exerciseId,
+          },
+        });
+        proxy.writeQuery({
+          query: GET_EXERCISE_LOG,
+          variables: {
+            exerciseId,
+          },
+          data: {
+            getExerciseLog: data.getExerciseLog.sets.filter(
+              (set) => set.id !== setId
+            ),
+          },
+        });
+      }
       enqueueSnackbar("Set deleted successfully", { variant: "success" });
     },
     variables: {

@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditSetButton = ({ exerciseId, set }) => {
+const EditSetButton = ({ workoutId, exerciseId, set }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -47,6 +47,7 @@ const EditSetButton = ({ exerciseId, set }) => {
         <DialogContent>
           <DialogContentText>Edit the current set below</DialogContentText>
           <EditSetForm
+            workoutId={workoutId}
             exerciseId={exerciseId}
             set={set}
             handleClose={handleClose}

@@ -6,6 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import styles from "./styles";
 import { GET_WORKOUT_LOG } from "../../util/graphql-operations";
 import { convertToDateTime } from "../../util/common-functions";
+import WorkoutInfo from "./WorkoutInfo";
 
 export const SingleWorkoutLog = ({ props }) => {
   const classes = styles();
@@ -51,9 +52,7 @@ export const SingleWorkoutLog = ({ props }) => {
           )}
 
           <Paper className={classes.paper}>
-            {workout.exercises.map((exercise) => (
-              <h2>{exercise.exerciseName}</h2>
-            ))}
+            <WorkoutInfo workout={workout} />
           </Paper>
         </>
       )}

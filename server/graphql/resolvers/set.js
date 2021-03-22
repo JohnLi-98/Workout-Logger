@@ -50,7 +50,7 @@ const addSetToWorkoutLog = async (
     (exercise) => exercise.id === exerciseId
   );
   if (!exerciseExists) {
-    workoutLog.exercises.unshift({
+    workoutLog.exercises.push({
       _id: exerciseId,
       exerciseName,
     });
@@ -60,7 +60,7 @@ const addSetToWorkoutLog = async (
     (exercise) => exercise.id === exerciseId
   );
   if (exercise) {
-    exercise.sets.unshift(set);
+    exercise.sets.push(set);
     await workoutLog.save();
   }
 };
