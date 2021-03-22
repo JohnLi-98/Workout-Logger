@@ -25,6 +25,7 @@ module.exports = gql`
     id: ID!
     workoutName: String
     username: String!
+    createdAt: Float!
     notes: String
     exercises: [Exercise]!
   }
@@ -41,16 +42,16 @@ module.exports = gql`
   }
   input LogSetInput {
     exerciseName: String!
-    weight: Float!
-    reps: Int!
-    notes: String!
+    weight: Float
+    reps: Int
+    notes: String
   }
   input EditSetInput {
     exerciseId: ID!
     setId: ID!
-    weight: Float!
-    reps: Int!
-    notes: String!
+    weight: Float
+    reps: Int
+    notes: String
   }
 
   type Query {
@@ -64,8 +65,8 @@ module.exports = gql`
     login(loginInput: LoginInput): User!
     register(registerInput: RegisterInput): User!
     logSet(logSetInput: LogSetInput): Set!
-    deleteSet(exerciseId: ID!, setId: ID!): Set
-    editSet(editSetInput: EditSetInput): Set
+    deleteSet(exerciseId: ID!, setId: ID!): String!
+    editSet(editSetInput: EditSetInput): String!
     addExercise(exerciseName: String!): Exercise!
   }
 `;
