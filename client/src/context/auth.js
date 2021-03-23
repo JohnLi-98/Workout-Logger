@@ -5,6 +5,8 @@ const initialState = {
   user: null,
 };
 
+// Gets token from local storage if there is one and checks that is valid (not passed
+// expiry - 1 hour from logging in), then sets the user prop/key with the value decodedToken.
 if (localStorage.getItem("jwtToken")) {
   const decodedToken = jwtDecode(localStorage.getItem("jwtToken"));
 
@@ -15,12 +17,17 @@ if (localStorage.getItem("jwtToken")) {
   }
 }
 
+// Create context with boilerplate template for info and actions that can be stored. Returns
+// Provider and Consumer components (Consumer is not used).
 const AuthContext = createContext({
   user: null,
   login: (userData) => {},
   logout: () => {},
 });
 
+// Reducer function to handle/manipulate state values for authentication actions. Takes the
+// passed in current state, updates specific state values and spreads the rest, depending on
+// the action type.
 const authReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -32,6 +39,8 @@ const authReducer = (state, action) => {
   }
 };
 
+// AuthProvider uses the dispatch() and attaches a type and a payload, for the above
+// reducer to listen for and perform actions to update state values.
 const AuthProvider = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -50,6 +59,7 @@ const AuthProvider = (props) => {
     });
   };
 
+  // Returns the Provider, so it these functions and user state and can be accessed elsewhere.
   return (
     <AuthContext.Provider
       value={{ user: state.user, login, logout }}

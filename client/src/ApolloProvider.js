@@ -13,6 +13,8 @@ const httpLink = createHttpLink({
   uri: "http://localhost:5000",
 });
 
+// Automatically adds token to authorization in headers with setContext(). Acts as middleware, by setting
+// a context of a request and modifies what you want to to do before the request is sent to the http link.
 const authLink = setContext(() => {
   const token = localStorage.getItem("jwtToken");
   return {
@@ -22,6 +24,7 @@ const authLink = setContext(() => {
   };
 });
 
+// Sends protected api calls/requests with the auth link.
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),

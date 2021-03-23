@@ -7,6 +7,9 @@ import { AuthContext } from "../context/auth";
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { user } = useContext(AuthContext);
 
+  // If there is an authenticated user, redirect user to home page of application
+  // otherwise to the page/component that was passed in. (Prevents auth users from
+  // accessing login / register pages).
   return (
     <Route
       {...rest}

@@ -1,5 +1,3 @@
-import { formatError } from "graphql";
-
 const ordinal = (date) => {
   if (date > 3 && date < 21) return "th";
   switch (date % 10) {
