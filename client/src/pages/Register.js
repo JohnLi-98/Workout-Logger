@@ -1,9 +1,9 @@
 import React from "react";
 
-import RegisterForm from "../components/account/RegisterForm";
+import RegisterPage from "../components/account-pages/RegisterPage";
 
 const Register = (props) => {
-  return <RegisterForm props={props} />;
+  return <RegisterPage props={props} />;
 };
 
 export default Register;

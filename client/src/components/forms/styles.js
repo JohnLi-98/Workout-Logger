@@ -1,10 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
 const styles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
   form: {
     paddingBottom: "40px",
     margin: "auto",
@@ -17,15 +13,6 @@ const styles = makeStyles((theme) => ({
   },
   gridItem: {
     flexGrow: 1,
-  },
-  heading: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "70px 0 30px",
-    "& h1": {
-      marginBottom: "-5px",
-    },
   },
   input: {
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
