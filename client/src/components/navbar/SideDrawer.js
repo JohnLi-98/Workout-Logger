@@ -1,50 +1,14 @@
 import React, { useState, useContext } from "react";
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItemText,
-  withStyles,
-} from "@material-ui/core";
-import MuiListItem from "@material-ui/core/ListItem"; // Needed for style overrides
+import { Drawer, IconButton, List, ListItemText } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
 
+import { styles } from "./styles";
+import { SDListItem } from "./styles";
 import { AuthContext } from "../../context/auth";
 
-const useStyles = makeStyles({
-  list: {
-    width: "250px",
-    height: "100%",
-    backgroundColor: "#7289da",
-    color: "#ffffff;",
-    padding: "0 !important",
-  },
-  item: {
-    "& span": {
-      fontSize: "20px",
-    },
-  },
-});
-
-const ListItem = withStyles({
-  root: {
-    "&$selected": {
-      backgroundColor: "#2c2f33",
-    },
-    "&$selected:hover": {
-      backgroundColor: "#2c2f33",
-    },
-    "&:hover": {
-      backgroundColor: "#2c2f33",
-    },
-  },
-  selected: {},
-})(MuiListItem);
-
 const SideDrawer = ({ selectedItem, setSelectedItem }) => {
-  const classes = useStyles();
+  const classes = styles();
   const [state, setState] = useState({ right: false });
   const { user, logout } = useContext(AuthContext);
 
@@ -66,13 +30,13 @@ const SideDrawer = ({ selectedItem, setSelectedItem }) => {
 
   const drawerList = user ? (
     <List component="nav" style={{ padding: "0" }}>
-      <ListItem button onClick={logout}>
+      <SDListItem button onClick={logout}>
         <ListItemText className={classes.item} primary="Logout" />
-      </ListItem>
+      </SDListItem>
     </List>
   ) : (
     <List component="nav" style={{ padding: "0" }}>
-      <ListItem
+      <SDListItem
         button
         component={RouterLink}
         to="/account/login"
@@ -80,9 +44,9 @@ const SideDrawer = ({ selectedItem, setSelectedItem }) => {
         onClick={(event) => handleItemClick(event, "account/login")}
       >
         <ListItemText className={classes.item} primary="Login" />
-      </ListItem>
+      </SDListItem>
 
-      <ListItem
+      <SDListItem
         button
         component={RouterLink}
         to="/account/register"
@@ -90,7 +54,7 @@ const SideDrawer = ({ selectedItem, setSelectedItem }) => {
         onClick={(event) => handleItemClick(event, "account/register")}
       >
         <ListItemText className={classes.item} primary="Register" />
-      </ListItem>
+      </SDListItem>
     </List>
   );
 

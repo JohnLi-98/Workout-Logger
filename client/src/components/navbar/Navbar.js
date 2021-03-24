@@ -6,56 +6,17 @@ import {
   Hidden,
   List,
   ListItemText,
-  makeStyles,
   Toolbar,
-  withStyles,
 } from "@material-ui/core";
-import MuiListItem from "@material-ui/core/ListItem"; // Needed for style overrides
 import NavigationIcon from "@material-ui/icons/Navigation";
 import { Link as RouterLink } from "react-router-dom";
 
+import { styles } from "./styles";
+import { ListItem } from "./styles";
 import HideNavOnScroll from "./HideNavOnScroll";
 import SideDrawer from "./SideDrawer";
 import ScrollToTop from "./ScrollToTop";
 import { AuthContext } from "../../context/auth";
-
-const styles = makeStyles({
-  navbar: {
-    backgroundColor: "#7289da",
-    height: "80px",
-  },
-  navbarDisplayFlex: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  navListDisplayFlex: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  item: {
-    "& span": {
-      fontSize: "20px",
-    },
-  },
-});
-
-const ListItem = withStyles({
-  root: {
-    "&$selected": {
-      borderBottom: "2px solid white",
-      paddingBottom: "2px",
-    },
-    "&$selected:hover": {
-      borderBottom: "2px solid white",
-      paddingBottom: "2px",
-    },
-    "&:hover": {
-      borderBottom: "2px solid white",
-      paddingBottom: "2px",
-    },
-  },
-  selected: {},
-})(MuiListItem);
 
 const Navbar = () => {
   const classes = styles();
