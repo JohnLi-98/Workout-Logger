@@ -14,6 +14,12 @@ const styles = makeStyles((theme) => ({
   gridItem: {
     flexGrow: 1,
   },
+  paddingLeft: {
+    paddingRight: "5px",
+  },
+  paddingRight: {
+    paddingLeft: "5px",
+  },
   input: {
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
       borderColor: "#ffffff",

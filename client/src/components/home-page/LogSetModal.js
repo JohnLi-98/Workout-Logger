@@ -4,7 +4,6 @@ import {
   Button,
   Fade,
   Grid,
-  makeStyles,
   MenuItem,
   Modal,
   TextField,
@@ -13,72 +12,20 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useMutation, useQuery } from "@apollo/client";
 import { useSnackbar } from "notistack";
 
+import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
 import { GET_USER_EXERCISES, LOG_SET } from "../../util/graphql-operations";
 import AddExerciseModal from "./AddExerciseModal";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid black",
-    boxShadow: theme.shadows[5],
-    color: theme.palette.common.black,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    padding: theme.spacing(4, 5),
-    height: "80vh",
-    width: "400px",
-  },
-  formInput: {
-    margin: theme.spacing(1, 0),
-  },
-  gridLeft: {
-    paddingRight: "5px",
-  },
-  gridRight: {
-    paddingLeft: "5px",
-  },
-  addExerciseItem: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  buttonsDiv: {
-    display: "flex",
-    justifyContent: "flex-end",
-    paddingTop: "30px 0",
-  },
-  addButton: {
-    margin: "0 10px",
-    color: "green",
-    borderColor: "green",
-    "&:hover": {
-      backgroundColor: "green",
-      color: "white",
-    },
-  },
-  cancelButton: {
-    color: "red",
-    borderColor: "red",
-    "&:hover": {
-      backgroundColor: "red",
-      color: "white",
-    },
-  },
-}));
+const LogSetModal = ({ logSetModalOpen, logSetModalChange }) => {
+  const classes = styles();
+  const [errors, setErrors] = useState({});
+  const closeLogSetModal = () => {
+    logSetModalChange(false);
+    setErrors({});
+    resetFormValues();
+  };
 
-const LogSetModal = ({
-  logSetModalOpen,
-  errors,
-  setErrors,
-  logSetModalChange,
-}) => {
-  const classes = useStyles();
   const { data: { getAllExerciseLogs: exercises } = {} } = useQuery(
     GET_USER_EXERCISES
   );
@@ -119,8 +66,7 @@ const LogSetModal = ({
         className={classes.modal}
         open={logSetModalOpen}
         onClose={() => {
-          logSetModalChange(false);
-          resetFormValues();
+          closeLogSetModal();
         }}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -232,8 +178,7 @@ const LogSetModal = ({
                 variant="outlined"
                 className={classes.cancelButton}
                 onClick={() => {
-                  logSetModalChange(false);
-                  resetFormValues();
+                  closeLogSetModal();
                 }}
               >
                 Cancel
