@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 const styles = makeStyles((theme) => ({
+  // Account Pages Form Components
   form: {
     paddingBottom: "40px",
     margin: "auto",
@@ -13,12 +14,6 @@ const styles = makeStyles((theme) => ({
   },
   gridItem: {
     flexGrow: 1,
-  },
-  paddingLeft: {
-    paddingRight: "5px",
-  },
-  paddingRight: {
-    paddingLeft: "5px",
   },
   input: {
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
@@ -61,6 +56,21 @@ const styles = makeStyles((theme) => ({
   },
   visibilityIcon: {
     color: "white",
+  },
+
+  // Home Page Form Components
+  addExerciseItem: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  homeFormInput: {
+    margin: theme.spacing(1, 0),
+  },
+  paddingLeft: {
+    paddingRight: "5px",
+  },
+  paddingRight: {
+    paddingLeft: "5px",
   },
 }));
 

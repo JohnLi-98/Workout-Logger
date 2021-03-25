@@ -141,7 +141,7 @@ const styles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  paper: {
+  lsPaper: {
     backgroundColor: theme.palette.background.paper,
     border: "2px solid black",
     boxShadow: theme.shadows[5],
@@ -153,23 +153,10 @@ const styles = makeStyles((theme) => ({
     height: "80vh",
     width: "400px",
   },
-  formInput: {
-    margin: theme.spacing(1, 0),
-  },
-  gridLeft: {
-    paddingRight: "5px",
-  },
-  gridRight: {
-    paddingLeft: "5px",
-  },
-  addExerciseItem: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   buttonsDiv: {
     display: "flex",
     justifyContent: "flex-end",
-    paddingTop: "30px 0",
+    paddingTop: "30px",
   },
   addButton: {
     margin: "0 10px",
@@ -187,6 +174,15 @@ const styles = makeStyles((theme) => ({
       backgroundColor: "red",
       color: "white",
     },
+  },
+
+  // AddExerciseModal Component
+  aePaper: {
+    padding: theme.spacing(4, 5),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "300px",
   },
 }));
 
