@@ -10,12 +10,20 @@ import {
 import EditIcon from "@material-ui/icons/Edit";
 
 import styles from "./styles";
-import EditSetForm from "./EditSetForm";
+import EditSetForm from "../forms/EditSet";
 
+// Used for Dialog TransitionComponent prop.
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+/**
+ * Component is called on both the SetsTable and WorkoutInfo components to allow editing of a set in their log.
+ * @param workoutId ID of the workout being edited - only passed in if this component is invoked from the WorkoutInfo component.
+ * @param exerciseId ID of the exercise that is being edited - always passed in.
+ * @param set Object that contains the set data that is being edited - always passed in.
+ * @returns Icon button that opens up a Dialog component with a form to edit a set.
+ */
 const EditSetButton = ({ workoutId, exerciseId, set }) => {
   const classes = styles();
   const [open, setOpen] = useState(false);
