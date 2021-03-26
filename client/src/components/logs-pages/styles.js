@@ -39,7 +39,7 @@ const styles = makeStyles((theme) => ({
   },
   root: {
     flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
+    marginLeft: theme.spacing(2),
   },
 
   // SingleExerciseLog Component
@@ -71,9 +71,6 @@ const styles = makeStyles((theme) => ({
   },
 
   // WorkoutInfo Component
-  root: {
-    padding: theme.spacing(2),
-  },
   accordion: {
     padding: theme.spacing(2, 0),
   },

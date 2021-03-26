@@ -22,9 +22,13 @@ import { Link as RouterLink } from "react-router-dom";
 
 import styles from "../styles";
 import { convertToDateTime } from "../../../util/common-functions";
+import TablePaginationActions from "../TablePaginationActions";
 
 const workoutDuration = (workoutStart, lastSet) => {
-  let duration = Math.ceil((lastSet - workoutStart) / 1000 / 60);
+  console.log(lastSet + " " + workoutStart);
+  let duration = (lastSet - workoutStart) / 1000 / 60;
+  console.log(duration);
+  duration = Math.ceil(duration);
   duration === 1 ? (duration += " minute") : (duration += " minutes");
   if (workoutStart + 14400000 > Date.now()) {
     duration += " (In Progress)";
@@ -120,75 +124,6 @@ const WorkoutsTable = ({ workouts }) => {
       </TableContainer>
     </Paper>
   );
-};
-
-const TablePaginationActions = (props) => {
-  const classes = styles();
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onChangePage } = props;
-  const handleFirstPageClick = (event) => {
-    onChangePage(event, 0);
-  };
-  const handleBackClick = (event) => {
-    onChangePage(event, page - 1);
-  };
-  const handleNextClick = (event) => {
-    onChangePage(event, page + 1);
-  };
-  const handleLastPageClick = (event) => {
-    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <div className={classes.root}>
-      <IconButton
-        onClick={handleFirstPageClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-
-      <IconButton
-        onClick={handleBackClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
-      </IconButton>
-
-      <IconButton
-        onClick={handleNextClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </IconButton>
-
-      <IconButton
-        onClick={handleLastPageClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </div>
-  );
-};
-
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onChangePage: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
 };
 
 export default WorkoutsTable;
