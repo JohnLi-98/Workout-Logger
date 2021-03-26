@@ -146,7 +146,7 @@ const addSetToWorkoutLog = async (
   const exercise = workoutLog.exercises.find(
     (exercise) => exercise.id === exerciseId
   );
-  exercise.sets.unshift(set);
+  exercise.sets.push(set);
   await workoutLog.save();
 };
 

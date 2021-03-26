@@ -77,18 +77,23 @@ const WorkoutsTable = ({ workouts }) => {
                     page * rowsPerPage + rowsPerPage
                   )
                 : workouts
-              ).map(({ id, createdAt, exercises }) => (
-                <TableRow key={id}>
-                  <TableCell>
-                    <Link component={RouterLink} to={`my-workout-logs/${id}`}>
-                      {convertToDateTime(createdAt)}
-                    </Link>
-                  </TableCell>
-                  <TableCell align="right">
-                    {workoutDuration(createdAt, exercises[0].sets[0].createdAt)}
-                  </TableCell>
-                </TableRow>
-              ))
+              ).map((workout) => {
+                const { id, createdAt: workoutCreatedAt, exercises } = workout;
+                const lastSet = exercises[0].sets[exercises[0].sets.length - 1];
+                const lastSetTime = lastSet.createdAt;
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <Link component={RouterLink} to={`my-workout-logs/${id}`}>
+                        {convertToDateTime(workoutCreatedAt)}
+                      </Link>
+                    </TableCell>
+                    <TableCell align="right">
+                      {workoutDuration(workoutCreatedAt, lastSetTime)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
 
