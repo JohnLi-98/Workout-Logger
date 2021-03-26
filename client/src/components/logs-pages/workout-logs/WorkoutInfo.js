@@ -12,6 +12,11 @@ import { convertToDateTime } from "../../../util/common-functions";
 import EditSetButton from "../EditSetButton";
 import DeleteSetButton from "../DeleteSetButton";
 
+/**
+ *
+ * @param workout Object that contains the workout data - exercises and sets.
+ * @returns Individual accordions for each exercise and the number of sets logged for it.
+ */
 const WorkoutInfo = ({ workout }) => {
   const classes = styles();
 

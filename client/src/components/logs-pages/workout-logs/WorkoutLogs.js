@@ -6,8 +6,14 @@ import styles from "../styles";
 import { GET_WORKOUT_LOGS } from "../../../util/graphql-operations";
 import WorkoutsTable from "./WorkoutsTable";
 
+/**
+ *
+ * @returns Content for the Workout Logs page. (Entry point)
+ */
 export const WorkoutLogs = () => {
   const classes = styles();
+
+  // Get user's workout logs to display in the WorkoutsTable component.
   const {
     loading,
     data: { getAllWorkoutLogs: workoutLogs } = {},

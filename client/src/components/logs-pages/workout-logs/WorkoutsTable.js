@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
-  IconButton,
   Link,
   Paper,
   Table,
@@ -12,12 +10,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  useTheme,
 } from "@material-ui/core";
-import FirstPageIcon from "@material-ui/icons/FirstPage";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import LastPageIcon from "@material-ui/icons/LastPage";
 import { Link as RouterLink } from "react-router-dom";
 
 import styles from "../styles";
@@ -25,9 +18,7 @@ import { convertToDateTime } from "../../../util/common-functions";
 import TablePaginationActions from "../TablePaginationActions";
 
 const workoutDuration = (workoutStart, lastSet) => {
-  console.log(lastSet + " " + workoutStart);
   let duration = (lastSet - workoutStart) / 1000 / 60;
-  console.log(duration);
   duration = Math.ceil(duration);
   duration === 1 ? (duration += " minute") : (duration += " minutes");
   if (workoutStart + 14400000 > Date.now()) {
@@ -36,6 +27,11 @@ const workoutDuration = (workoutStart, lastSet) => {
   return duration;
 };
 
+/**
+ *
+ * @param workouts Object that contains the data for the user's workouts.
+ * @returns User's workout data presented in a Table component.
+ */
 const WorkoutsTable = ({ workouts }) => {
   const classes = styles();
   const [page, setPage] = useState(0);
@@ -81,21 +77,15 @@ const WorkoutsTable = ({ workouts }) => {
                     page * rowsPerPage + rowsPerPage
                   )
                 : workouts
-              ).map((workout) => (
-                <TableRow key={workout.id}>
+              ).map(({ id, createdAt, exercises }) => (
+                <TableRow key={id}>
                   <TableCell>
-                    <Link
-                      component={RouterLink}
-                      to={`my-workout-logs/${workout.id}`}
-                    >
-                      {convertToDateTime(workout.createdAt)}
+                    <Link component={RouterLink} to={`my-workout-logs/${id}`}>
+                      {convertToDateTime(createdAt)}
                     </Link>
                   </TableCell>
                   <TableCell align="right">
-                    {workoutDuration(
-                      workout.createdAt,
-                      workout.exercises[0].sets[0].createdAt
-                    )}
+                    {workoutDuration(createdAt, exercises[0].sets[0].createdAt)}
                   </TableCell>
                 </TableRow>
               ))

@@ -8,15 +8,22 @@ import { GET_WORKOUT_LOG } from "../../../util/graphql-operations";
 import { convertToDateTime } from "../../../util/common-functions";
 import WorkoutInfo from "./WorkoutInfo";
 
+/**
+ *
+ * @param props react-router-dom props that is passed to all routes - used to get workoutId
+ * @returns Content for a single workout log (renders exercises and sets - entry point).
+ */
 export const SingleWorkoutLog = ({ props }) => {
   const classes = styles();
-  const workoutId = props.match.params.workoutId;
   const [error, setError] = useState({});
+
+  // Get the exercise ID from props (url) and use it to get the log for that workout.
+  const workoutId = props.match.params.workoutId;
   const { loading, data: { getWorkoutLog: workout } = {} } = useQuery(
     GET_WORKOUT_LOG,
     {
       onError(err) {
-        console.log(err);
+        setError(err.graphQLErrors[0].message);
       },
       variables: {
         workoutId,
@@ -33,12 +40,18 @@ export const SingleWorkoutLog = ({ props }) => {
       ) : (
         <>
           {workout ? (
-            <Paper className={classes.heading}>
-              <h1>{convertToDateTime(workout.createdAt)}</h1>
-              <p>
-                {`View your progression and set history for the workout below.`}
-              </p>
-            </Paper>
+            <>
+              <Paper className={classes.heading}>
+                <h1>{convertToDateTime(workout.createdAt)}</h1>
+                <p>
+                  {`View your progression and set history for the workout below.`}
+                </p>
+              </Paper>
+
+              <Paper className={classes.paper}>
+                <WorkoutInfo workout={workout} />
+              </Paper>
+            </>
           ) : (
             <Paper className={classes.heading}>
               <h1>Error</h1>
@@ -50,10 +63,6 @@ export const SingleWorkoutLog = ({ props }) => {
               </p>
             </Paper>
           )}
-
-          <Paper className={classes.paper}>
-            <WorkoutInfo workout={workout} />
-          </Paper>
         </>
       )}
     </Container>

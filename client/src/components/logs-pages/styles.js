@@ -42,8 +42,6 @@ const styles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
 
-  // SingleExerciseLog Component
-
   // SetsTable Component
   accordionSummary: {
     backgroundColor: "#d3d3d3",
@@ -57,17 +55,6 @@ const styles = makeStyles((theme) => ({
     "&:hover": {
       color: "red",
     },
-  },
-
-  // EditSetForm Component
-  formInput: {
-    margin: theme.spacing(1, 0),
-  },
-  gridLeft: {
-    paddingRight: "5px",
-  },
-  gridRight: {
-    paddingLeft: "5px",
   },
 
   // WorkoutInfo Component

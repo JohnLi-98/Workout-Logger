@@ -39,12 +39,24 @@ export const SingleExerciseLog = ({ props }) => {
       ) : (
         <>
           {exercise ? (
-            <Paper className={classes.heading}>
-              <h1>{exercise.exerciseName}</h1>
-              <p>
-                {`View your progression and set history for ${exercise.exerciseName} below.`}
-              </p>
-            </Paper>
+            <>
+              <Paper className={classes.heading}>
+                <h1>{exercise.exerciseName}</h1>
+                <p>
+                  {`View your progression and set history for ${exercise.exerciseName} below.`}
+                </p>
+              </Paper>
+
+              <Paper className={classes.paper}>
+                {exercise.sets[0] ? (
+                  <SetsTable exerciseId={exercise.id} sets={exercise.sets} />
+                ) : (
+                  <Paper className={classes.centerContent}>
+                    <p>No sets logged for this exercise</p>
+                  </Paper>
+                )}
+              </Paper>
+            </>
           ) : (
             <Paper className={classes.heading}>
               <h1>Error</h1>
@@ -56,16 +68,6 @@ export const SingleExerciseLog = ({ props }) => {
               </p>
             </Paper>
           )}
-
-          <Paper className={classes.paper}>
-            {exercise.sets[0] ? (
-              <SetsTable exerciseId={exercise.id} sets={exercise.sets} />
-            ) : (
-              <Paper className={classes.centerContent}>
-                <p>No sets logged for this exercise</p>
-              </Paper>
-            )}
-          </Paper>
         </>
       )}
     </Container>

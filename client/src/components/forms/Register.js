@@ -16,6 +16,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Alert from "@material-ui/lab/Alert";
 import { useMutation } from "@apollo/client";
+import { useSnackbar } from "notistack";
 
 import styles from "./styles";
 import { useForm } from "../../util/form-hooks";
@@ -24,6 +25,7 @@ import { REGISTER_USER } from "../../util/graphql-operations";
 const Register = ({ props }) => {
   const classes = styles();
   const [errors, setErrors] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
 
   const registerUser = () => addUser();
 
@@ -51,6 +53,7 @@ const Register = ({ props }) => {
   const [addUser] = useMutation(REGISTER_USER, {
     update(_) {
       props.history.push("/");
+      enqueueSnackbar("Account created", { variant: "success" });
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.errors);
