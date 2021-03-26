@@ -20,8 +20,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { Link as RouterLink } from "react-router-dom";
 
-import styles from "./styles";
-import { convertToDateTime } from "../../util/common-functions";
+import styles from "../styles";
+import { convertToDateTime } from "../../../util/common-functions";
 
 const workoutDuration = (workoutStart, lastSet) => {
   let duration = Math.ceil((lastSet - workoutStart) / 1000 / 60);

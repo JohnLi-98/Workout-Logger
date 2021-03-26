@@ -3,8 +3,8 @@ import { useQuery } from "@apollo/client";
 import { Container, Link, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 
-import styles from "./styles";
-import { GET_EXERCISE_LOG } from "../../util/graphql-operations";
+import styles from "../styles";
+import { GET_EXERCISE_LOG } from "../../../util/graphql-operations";
 import SetsTable from "./SetsTable";
 
 export const SingleExerciseLog = ({ props }) => {

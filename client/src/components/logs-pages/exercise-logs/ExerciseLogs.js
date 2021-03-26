@@ -2,10 +2,10 @@ import React from "react";
 import { Container, Paper } from "@material-ui/core";
 import { useQuery } from "@apollo/client";
 
-import { GET_EXERCISE_LOGS } from "../../util/graphql-operations";
+import { GET_EXERCISE_LOGS } from "../../../util/graphql-operations";
 import LogsTable from "./LogsTable";
 
-import styles from "./styles";
+import styles from "../styles";
 
 export const ExerciseLogs = () => {
   const classes = styles();

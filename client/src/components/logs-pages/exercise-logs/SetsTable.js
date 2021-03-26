@@ -24,10 +24,10 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import EditIcon from "@material-ui/icons/Edit";
 
-import styles from "./styles";
-import { convertToDateTime } from "../../util/common-functions";
-import DeleteSetButton from "./DeleteSetButton";
-import EditSetButton from "./EditSetButton";
+import styles from "../styles";
+import { convertToDateTime } from "../../../util/common-functions";
+import DeleteSetButton from "../DeleteSetButton";
+import EditSetButton from "../EditSetButton";
 
 const TablePaginationActions = (props) => {
   const classes = styles();

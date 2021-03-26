@@ -2,8 +2,8 @@ import React from "react";
 import { Container, Paper } from "@material-ui/core";
 import { useQuery } from "@apollo/client";
 
-import styles from "./styles";
-import { GET_WORKOUT_LOGS } from "../../util/graphql-operations";
+import styles from "../styles";
+import { GET_WORKOUT_LOGS } from "../../../util/graphql-operations";
 import WorkoutsTable from "./WorkoutsTable";
 
 export const WorkoutLogs = () => {

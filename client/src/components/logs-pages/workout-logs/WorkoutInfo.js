@@ -7,10 +7,10 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import styles from "./styles";
-import { convertToDateTime } from "../../util/common-functions";
-import EditSetButton from "./EditSetButton";
-import DeleteSetButton from "./DeleteSetButton";
+import styles from "../styles";
+import { convertToDateTime } from "../../../util/common-functions";
+import EditSetButton from "../EditSetButton";
+import DeleteSetButton from "../DeleteSetButton";
 
 const WorkoutInfo = ({ workout }) => {
   const classes = styles();

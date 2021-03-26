@@ -3,9 +3,9 @@ import { Container, Link, Paper } from "@material-ui/core";
 import { useQuery } from "@apollo/client";
 import { Link as RouterLink } from "react-router-dom";
 
-import styles from "./styles";
-import { GET_WORKOUT_LOG } from "../../util/graphql-operations";
-import { convertToDateTime } from "../../util/common-functions";
+import styles from "../styles";
+import { GET_WORKOUT_LOG } from "../../../util/graphql-operations";
+import { convertToDateTime } from "../../../util/common-functions";
 import WorkoutInfo from "./WorkoutInfo";
 
 export const SingleWorkoutLog = ({ props }) => {
