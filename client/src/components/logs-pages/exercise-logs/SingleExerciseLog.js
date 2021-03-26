@@ -7,9 +7,16 @@ import styles from "../styles";
 import { GET_EXERCISE_LOG } from "../../../util/graphql-operations";
 import SetsTable from "./SetsTable";
 
+/**
+ *
+ * @param props react-router-dom props that is passed to all routes - used to get exerciseId
+ * @returns Content for a single exercise log (renders sets - entry point).
+ */
 export const SingleExerciseLog = ({ props }) => {
   const classes = styles();
   const [error, setError] = useState();
+
+  // Get the exercise ID from props (url) and use it to get the log for that exercise.
   const exerciseId = props.match.params.exerciseId;
   const { loading, data: { getExerciseLog: exercise } = {} } = useQuery(
     GET_EXERCISE_LOG,

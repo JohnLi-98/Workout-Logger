@@ -79,7 +79,9 @@ const LogsTable = ({ exercises }) => {
                   </TableCell>
                   <TableCell align="right">
                     {exercise.sets[0]
-                      ? convertToDateTime(exercise.sets[0].createdAt)
+                      ? convertToDateTime(
+                          exercise.sets[exercise.sets.length - 1].createdAt
+                        )
                       : "N/A"}
                   </TableCell>
                 </TableRow>
