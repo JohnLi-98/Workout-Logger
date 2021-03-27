@@ -147,6 +147,9 @@ const addSetToWorkoutLog = async (
     (exercise) => exercise.id === exerciseId
   );
   exercise.sets.push(set);
+  workoutLog.exercises.sort((x, y) => {
+    return x == exercise ? -1 : y == exercise ? 1 : 0;
+  });
   await workoutLog.save();
 };
 
