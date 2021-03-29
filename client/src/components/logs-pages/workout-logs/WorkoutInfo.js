@@ -21,7 +21,7 @@ const WorkoutInfo = ({ workout }) => {
   const classes = styles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.margin}>
       {workout.exercises.map((exercise) => (
         <Accordion key={exercise.id} className={classes.accordion}>
           <AccordionSummary

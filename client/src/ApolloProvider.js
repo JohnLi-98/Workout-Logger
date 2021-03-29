@@ -10,7 +10,7 @@ import { setContext } from "apollo-link-context";
 import App from "./App";
 
 const httpLink = createHttpLink({
-  uri: "https://localhost:5000",
+  uri: "http://localhost:5000",
 });
 
 // Automatically adds token to authorization in headers with setContext(). Acts as middleware, by setting

@@ -58,6 +58,9 @@ const styles = makeStyles((theme) => ({
   },
 
   // WorkoutInfo Component
+  margin: {
+    padding: theme.spacing(0, 2),
+  },
   accordion: {
     padding: theme.spacing(2, 0),
   },
